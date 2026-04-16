@@ -1,0 +1,80 @@
+/* Global Spacing and Responsiveness - Small, Medium, Large */
+
+/* =========================
+   Large / Laptop (Default)
+   min-width: 1025px
+========================= */
+@media (min-width: 1025px) {
+  .page-container {
+    padding: 1rem;
+    max-width: 1000px;
+  }
+}
+
+/* =========================
+   Medium / Tablet
+   min-width: 601px to max-width: 1024px
+========================= */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .page-container {
+    padding: 0.75rem;
+    max-width: 90%;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .grid-2 {
+    gap: 0.75rem;
+  }
+}
+
+/* =========================
+   Small / Mobile
+   max-width: 600px
+========================= */
+@media (max-width: 600px) {
+  .page-container {
+    padding: 0.5rem;
+    max-width: 100%;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  /* Reduce padding on mobile */
+  .card, .stat-card, .form-card {
+    padding: 0.6rem;
+  }
+
+  /* Ensure long titles don't break the layout */
+  h1 { font-size: 1.25rem; }
+  h2 { font-size: 1.15rem; }
+  h3 { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+  /* Extra small mobile adjustments */
+  .page-container {
+    padding: 0.25rem;
+  }
+
+  .goals-list {
+    gap: 0.4rem;
+  }
+
+  .controls {
+    gap: 0.2rem;
+  }
+}
