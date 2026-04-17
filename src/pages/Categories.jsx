@@ -17,6 +17,7 @@ import {
   LinearProgress,
   Paper,
   Avatar,
+  Divider,
   Tooltip as MuiTooltip,
   useTheme,
   alpha,
@@ -177,10 +178,10 @@ function Categories() {
               {t("categories").toUpperCase()}
             </Typography>
             <Typography variant="h3" sx={{ fontWeight: 900, letterSpacing: '-0.03em', mb: 1.5, fontSize: { xs: '2rem', md: '2.5rem' } }}>
-              {t("performanceByCategory")}
+              {t("performanceOverview") || "Performance Overview"}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, maxWidth: 700, lineHeight: 1.6, fontSize: '1.1rem' }}>
-              {t("categoryDesc")}
+              {t("visualSummary") || "A complete visual summary of your journey across all categories."}
             </Typography>
           </Box>
         </Box>
@@ -197,44 +198,87 @@ function Categories() {
         ) : (
           <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
             {/* Summary Chart Section */}
-            <Grid item xs={12} lg={8}>
+            <Grid item xs={12}>
               <Paper
                 component={motion.div}
                 variants={itemVariants}
                 elevation={0}
                 sx={{
-                  p: { xs: 2, sm: 3, md: 4 },
-                  height: '100%',
-                  borderRadius: 6,
+                  p: { xs: 3, sm: 4, md: 5 },
+                  borderRadius: 8,
                   bgcolor: isDark ? alpha(theme.palette.background.paper, 0.4) : "white",
-                  backdropFilter: 'blur(10px)',
+                  backdropFilter: 'blur(20px)',
                   border: "1px solid",
-                  borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
-                  boxShadow: isDark ? "0 15px 35px rgba(0,0,0,0.2)" : "0 15px 35px rgba(0,0,0,0.02)",
+                  borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
+                  boxShadow: isDark ? "0 30px 60px rgba(0,0,0,0.4)" : "0 30px 60px rgba(0,0,0,0.05)",
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
-                <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Avatar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1), color: 'primary.main', width: 48, height: 48 }}>
-                    <StatsIcon />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 900 }}>{t("overallDistribution")}</Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>{t("categoryBreakdown")}</Typography>
+                {/* Subtle background decoration */}
+                <Box sx={{ position: 'absolute', top: 0, right: 0, width: '30%', height: '100%', background: `linear-gradient(90deg, transparent, ${alpha(theme.palette.primary.main, 0.03)})`, pointerEvents: 'none' }} />
+
+                <Box sx={{ mb: 5, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
+                    <Avatar 
+                      sx={{ 
+                        bgcolor: alpha(theme.palette.primary.main, 0.1), 
+                        color: 'primary.main', 
+                        width: 56, 
+                        height: 56,
+                        boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.2)}`,
+                        border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
+                      }}
+                    >
+                      <StatsIcon sx={{ fontSize: 28 }} />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: '-0.02em' }}>
+                        {t("analyticalBreakdown") || "Analytical Breakdown"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 700, opacity: 0.8 }}>
+                        {t("balanceAndProgress") || "Balance and Progress Overview"}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 1 }}>
+                        {t("totalGoals") || "Total Goals"}
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 900, color: 'primary.main', lineHeight: 1 }}>
+                        {categoryStats.reduce((acc, curr) => acc + curr.total, 0)}
+                      </Typography>
+                    </Box>
+                    <Divider orientation="vertical" flexItem sx={{ mx: 1, opacity: 0.5 }} />
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 1 }}>
+                        {t("avgProgress") || "Avg. Progress"}
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 900, color: 'secondary.main', lineHeight: 1 }}>
+                        {categoryStats.filter(s => s.total > 0).length > 0 
+                          ? Math.round(categoryStats.filter(s => s.total > 0).reduce((acc, curr) => acc + curr.percentage, 0) / categoryStats.filter(s => s.total > 0).length) 
+                          : 0}%
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
                 
-                <Box sx={{ height: { xs: 250, sm: 300, md: 350 }, width: "100%" }}>
+                <Box sx={{ height: { xs: 300, sm: 350, md: 450 }, width: "100%", position: 'relative', zIndex: 1 }}>
                   {categoryStats.some(s => s.total > 0) ? (
                     <AdvancedChart
-                      type="bar"
+                      type="composed"
                       data={categoryStats.filter(s => s.total > 0).map(s => ({ 
                         name: t(`cat${s.name}`) !== `cat${s.name}` ? t(`cat${s.name}`) : s.name, 
-                        value: s.total 
+                        count: s.total,
+                        progress: s.percentage
                       }))}
-                      colors={CHART_COLORS}
+                      colors={[theme.palette.primary.main, theme.palette.secondary.main]}
                       height="100%"
-                      showGrid={false}
-                      margin={{ top: 10, right: 10, left: -20, bottom: 30 }}
+                      showGrid={true}
+                      barName={t("totalGoals") || "Total Goals"}
+                      lineName={t("avgProgress") || "Avg. Progress"}
                     />
                   ) : (
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', opacity: 0.5 }}>
@@ -246,45 +290,28 @@ function Categories() {
               </Paper>
             </Grid>
 
-            {/* New Stats Summary Grid */}
-            <Grid item xs={12} lg={4}>
-               <Paper
-                component={motion.div}
-                variants={itemVariants}
-                elevation={0}
-                sx={{
-                  p: 3,
-                  height: '100%',
-                  borderRadius: 6,
-                  bgcolor: isDark ? alpha(theme.palette.background.paper, 0.4) : "white",
-                  border: "1px solid",
-                  borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 2
-                }}
-              >
-                <Typography variant="subtitle1" sx={{ fontWeight: 900, mb: 1 }}>{t("quickStats") || "Quick Stats"}</Typography>
-                
-                <Box sx={{ p: 2, borderRadius: 4, bgcolor: alpha(theme.palette.primary.main, 0.05), border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}` }}>
-                  <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', display: 'block', mb: 0.5 }}>{t("totalCategories") || "Total Categories"}</Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: 'primary.main' }}>{categoryStats.length}</Typography>
-                </Box>
-
-                <Box sx={{ p: 2, borderRadius: 4, bgcolor: alpha(theme.palette.success.main, 0.05), border: `1px solid ${alpha(theme.palette.success.main, 0.1)}` }}>
-                  <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', display: 'block', mb: 0.5 }}>{t("totalCompleted") || "Total Completed"}</Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: 'success.main' }}>{categoryStats.reduce((acc, curr) => acc + curr.completed, 0)}</Typography>
-                </Box>
-
-                <Box sx={{ p: 2, borderRadius: 4, bgcolor: alpha(theme.palette.info.main, 0.05), border: `1px solid ${alpha(theme.palette.info.main, 0.1)}` }}>
-                  <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', display: 'block', mb: 0.5 }}>{t("avgProgress") || "Avg. Progress"}</Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 900, color: 'info.main' }}>
-                  {categoryStats.filter(s => s.total > 0).length > 0 
-                    ? Math.round(categoryStats.filter(s => s.total > 0).reduce((acc, curr) => acc + curr.percentage, 0) / categoryStats.filter(s => s.total > 0).length) 
-                    : 0}%
-                </Typography>
-                </Box>
-              </Paper>
+            {/* Quick Stats Grid - Moving this below or removing if redundant */}
+            <Grid item xs={12}>
+               <Grid container spacing={3}>
+                 <Grid item xs={12} sm={4}>
+                    <Paper sx={{ p: 3, borderRadius: 5, bgcolor: alpha(theme.palette.primary.main, 0.05), border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`, textAlign: 'center' }}>
+                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', display: 'block', mb: 1 }}>{t("totalCategories") || "Total Categories"}</Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 900, color: 'primary.main' }}>{categoryStats.length}</Typography>
+                    </Paper>
+                 </Grid>
+                 <Grid item xs={12} sm={4}>
+                    <Paper sx={{ p: 3, borderRadius: 5, bgcolor: alpha(theme.palette.success.main, 0.05), border: `1px solid ${alpha(theme.palette.success.main, 0.1)}`, textAlign: 'center' }}>
+                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', display: 'block', mb: 1 }}>{t("totalCompleted") || "Total Completed"}</Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 900, color: 'success.main' }}>{categoryStats.reduce((acc, curr) => acc + curr.completed, 0)}</Typography>
+                    </Paper>
+                 </Grid>
+                 <Grid item xs={12} sm={4}>
+                    <Paper sx={{ p: 3, borderRadius: 5, bgcolor: alpha(theme.palette.info.main, 0.05), border: `1px solid ${alpha(theme.palette.info.main, 0.1)}`, textAlign: 'center' }}>
+                      <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', display: 'block', mb: 1 }}>{t("activeGoals") || "Active Goals"}</Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 900, color: 'info.main' }}>{categoryStats.reduce((acc, curr) => acc + curr.active, 0)}</Typography>
+                    </Paper>
+                 </Grid>
+               </Grid>
             </Grid>
 
             {/* Category Cards with Enhanced Design */}

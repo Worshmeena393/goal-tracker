@@ -276,79 +276,162 @@ function NewGoal() {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth variant="filled" sx={{ '& .MuiFilledInput-root': { borderRadius: 3, p: 1 } }}>
-                  <InputLabel sx={{ fontWeight: 800, px: 1 }}>{t("category")}</InputLabel>
-                  <Select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    disableUnderline
-                    startAdornment={<CategoryIcon sx={{ mr: 1, ml: 1, color: 'primary.main', opacity: 0.7 }} />}
-                    renderValue={(selected) => {
-                      const cat = allCategories.find(c => c.id === selected);
-                      return (
-                        <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}>
-                          {cat?.icon} {cat?.name}
-                        </Box>
-                      );
-                    }}
-                  >
+              <Grid item xs={12}>
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'text.secondary', mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CategoryIcon sx={{ fontSize: 18, color: 'primary.main' }} /> {t("category")?.toUpperCase() || "CATEGORY"}
+                  </Typography>
+                  <Grid container spacing={1.5}>
                     {allCategories.map((cat) => {
                       const isPredefined = ["Personal", "Work", "Health", "Study", "Other"].includes(cat.id);
+                      const isSelected = formData.category === cat.id;
                       return (
-                        <MenuItem key={cat.id} value={cat.id} sx={{ fontWeight: 700, py: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            {cat.icon} {cat.name}
+                        <Grid item key={cat.id}>
+                          <Box
+                            component={motion.div}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleChange({ target: { name: 'category', value: cat.id } })}
+                            sx={{
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 1.5,
+                              px: 2,
+                              py: 1.2,
+                              borderRadius: 3,
+                              border: '2px solid',
+                              borderColor: isSelected ? 'primary.main' : 'divider',
+                              bgcolor: isSelected ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+                              transition: 'all 0.2s ease',
+                              position: 'relative',
+                              '&:hover': {
+                                borderColor: 'primary.main',
+                                bgcolor: alpha(theme.palette.primary.main, 0.04)
+                              }
+                            }}
+                          >
+                            <Box sx={{ color: isSelected ? 'primary.main' : 'text.secondary', display: 'flex' }}>
+                              {cat.icon}
+                            </Box>
+                            <Typography sx={{ fontWeight: 800, fontSize: '0.85rem', color: isSelected ? 'primary.main' : 'text.primary' }}>
+                              {cat.name}
+                            </Typography>
+                            {!isPredefined && (
+                              <IconButton 
+                                size="small" 
+                                onClick={(e) => handleOpenRename(e, cat.id)}
+                                sx={{ 
+                                  ml: 1, 
+                                  p: 0.5,
+                                  opacity: 0.5, 
+                                  '&:hover': { opacity: 1, bgcolor: alpha(theme.palette.primary.main, 0.1) } 
+                                }}
+                              >
+                                <EditIcon sx={{ fontSize: 14 }} />
+                              </IconButton>
+                            )}
+                            {isSelected && (
+                              <Box sx={{ 
+                                position: 'absolute', 
+                                top: -6, 
+                                right: -6, 
+                                width: 16, 
+                                height: 16, 
+                                borderRadius: '50%', 
+                                bgcolor: 'primary.main',
+                                border: '2px solid white',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                              }}>
+                                <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'white' }} />
+                              </Box>
+                            )}
                           </Box>
-                          {!isPredefined && (
-                            <IconButton 
-                              size="small" 
-                              onClick={(e) => handleOpenRename(e, cat.id)}
-                              sx={{ ml: 2, opacity: 0.5, '&:hover': { opacity: 1, bgcolor: alpha(theme.palette.primary.main, 0.1) } }}
-                            >
-                              <EditIcon fontSize="small" />
-                            </IconButton>
-                          )}
-                        </MenuItem>
+                        </Grid>
                       );
                     })}
-                    <Divider />
-                    <MenuItem 
-                      onClick={() => setShowAddCategory(true)} 
-                      sx={{ fontWeight: 900, py: 1.5, color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1 }}
-                    >
-                      <AddIcon fontSize="small" /> {t("addNewCategory") || "Add New Category"}
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+                    <Grid item>
+                      <Box
+                        component={motion.div}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowAddCategory(true)}
+                        sx={{
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          px: 2,
+                          py: 1.2,
+                          borderRadius: 3,
+                          border: '2px dashed',
+                          borderColor: 'primary.main',
+                          color: 'primary.main',
+                          bgcolor: alpha(theme.palette.primary.main, 0.02),
+                          transition: 'all 0.2s ease',
+                          '&:hover': {
+                            bgcolor: alpha(theme.palette.primary.main, 0.06),
+                            boxShadow: `0 4px 12px ${alpha(theme.palette.primary.main, 0.1)}`
+                          }
+                        }}
+                      >
+                        <AddIcon sx={{ fontSize: 18 }} />
+                        <Typography sx={{ fontWeight: 900, fontSize: '0.85rem' }}>
+                          {t("add") || "Add"}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth variant="filled" sx={{ '& .MuiFilledInput-root': { borderRadius: 3, p: 1 } }}>
-                  <InputLabel sx={{ fontWeight: 800, px: 1 }}>{t("goalType")}</InputLabel>
-                  <Select
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    disableUnderline
-                    startAdornment={<TimelineIcon sx={{ mr: 1, ml: 1, color: 'primary.main', opacity: 0.7 }} />}
-                    renderValue={(selected) => {
-                      const type = typesWithIcons.find(t => t.id === selected);
-                      return (
-                        <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 700 }}>
-                          {type?.icon} {type?.name}
-                        </Box>
-                      );
-                    }}
-                  >
+              <Grid item xs={12}>
+                <Box sx={{ mb: 1 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'text.secondary', mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <TimelineIcon sx={{ fontSize: 18, color: 'primary.main' }} /> {t("goalType")?.toUpperCase() || "GOAL TYPE"}
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
                     {typesWithIcons.map((type) => (
-                      <MenuItem key={type.id} value={type.id} sx={{ fontWeight: 700, py: 1.5 }}>
-                        {type.icon} {type.name}
-                      </MenuItem>
+                      <Box
+                        key={type.id}
+                        component={motion.div}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleChange({ target: { name: 'type', value: type.id } })}
+                        sx={{
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1.5,
+                          px: 2.5,
+                          py: 1.5,
+                          borderRadius: 3,
+                          border: '2px solid',
+                          borderColor: formData.type === type.id ? 'primary.main' : 'divider',
+                          bgcolor: formData.type === type.id ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+                          transition: 'all 0.2s ease',
+                          '&:hover': {
+                            borderColor: 'primary.main',
+                            bgcolor: alpha(theme.palette.primary.main, 0.04)
+                          }
+                        }}
+                      >
+                        {type.icon}
+                        <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: formData.type === type.id ? 'primary.main' : 'text.primary' }}>
+                          {type.name}
+                        </Typography>
+                        {formData.type === type.id && (
+                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: 'primary.main' }} />
+                          </motion.div>
+                        )}
+                      </Box>
                     ))}
-                  </Select>
-                </FormControl>
+                  </Box>
+                </Box>
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -399,14 +482,22 @@ function NewGoal() {
                   name="notes"
                   value={formData.notes}
                   onChange={handleChange}
-                  variant="filled"
+                  variant="outlined"
                   placeholder={t("notesPlaceholder") || "Enter goal description or notes..."}
-                  InputProps={{ 
-                    disableUnderline: true, 
-                    sx: { borderRadius: 3, fontWeight: 700, p: 1 },
-                    startAdornment: <NotesIcon sx={{ mr: 1, mt: 1, alignSelf: 'flex-start', color: 'primary.main', opacity: 0.7 }} />
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 4,
+                      fontWeight: 600,
+                      bgcolor: isDark ? alpha(theme.palette.background.paper, 0.4) : alpha(theme.palette.primary.main, 0.02),
+                      '& fieldset': { borderColor: 'divider' },
+                      '&:hover fieldset': { borderColor: 'primary.main' },
+                      '&.Mui-focused fieldset': { borderWidth: '2px' }
+                    }
                   }}
-                  InputLabelProps={{ sx: { fontWeight: 800, px: 1 } }}
+                  InputProps={{ 
+                    startAdornment: <NotesIcon sx={{ mr: 1.5, mt: 1, alignSelf: 'flex-start', color: 'primary.main', opacity: 0.8 }} />
+                  }}
+                  InputLabelProps={{ sx: { fontWeight: 800 } }}
                 />
               </Grid>
 

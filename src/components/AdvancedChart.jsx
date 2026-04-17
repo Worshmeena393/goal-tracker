@@ -253,23 +253,89 @@ const AdvancedChart = ({
 
       case 'radar':
         return (
-          <RadarChart data={data} {...props}>
+          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data} {...props}>
             {renderGradients()}
             <PolarGrid stroke={alpha(theme.palette.divider, 0.3)} />
-            <PolarAngleAxis dataKey="subject" {...axisProps} />
-            <PolarRadiusAxis {...axisProps} />
+            <PolarAngleAxis 
+              dataKey={props.dataKey || "subject"} 
+              tick={{ fill: theme.palette.text.secondary, fontSize: 11, fontWeight: 700 }}
+            />
+            <PolarRadiusAxis 
+              angle={30} 
+              domain={[0, 100]} 
+              tick={{ fill: theme.palette.text.secondary, fontSize: 10 }}
+              axisLine={false}
+              tickLine={false}
+            />
             <Radar
-              name="Progress"
+              name={props.name || "Value"}
               dataKey="value"
               stroke={colors[0]}
               fill={gradient ? `url(#gradient-0)` : colors[0]}
-              fillOpacity={0.6}
+              fillOpacity={0.5}
+              strokeWidth={3}
               animationDuration={animated ? 1500 : 0}
             />
             <Tooltip content={<CustomTooltip />} />
-            {showLegend && <Legend />}
           </RadarChart>
         );
+
+      case 'composed':
+         return (
+           <ComposedChart {...commonProps} {...props}>
+             {renderGradients()}
+             {showGrid && <CartesianGrid strokeDasharray="3 3" stroke={alpha(theme.palette.divider, 0.3)} vertical={false} />}
+             <XAxis dataKey="name" {...axisProps} padding={{ left: 20, right: 20 }} />
+             <YAxis 
+               yAxisId="left" 
+               {...axisProps} 
+               label={{ value: props.barName || "Count", angle: -90, position: 'insideLeft', offset: -10, style: { fill: theme.palette.text.secondary, fontWeight: 800, fontSize: 10 } }} 
+             />
+             <YAxis 
+               yAxisId="right" 
+               orientation="right" 
+               {...axisProps} 
+               domain={[0, 100]}
+               tickFormatter={(val) => `${val}%`}
+               label={{ value: props.lineName || "Progress", angle: 90, position: 'insideRight', offset: -10, style: { fill: theme.palette.text.secondary, fontWeight: 800, fontSize: 10 } }}
+             />
+             <Tooltip 
+               content={<CustomTooltip />} 
+               cursor={{ fill: alpha(theme.palette.primary.main, 0.05) }}
+             />
+             {showLegend && (
+               <Legend 
+                 verticalAlign="top" 
+                 align="right" 
+                 height={36} 
+                 iconType="circle"
+                 wrapperStyle={{ paddingTop: 0, fontWeight: 700, fontSize: 12 }}
+               />
+             )}
+             {/* Bar for the primary metric */}
+             <Bar 
+               yAxisId="left"
+               name={props.barName || "Count"}
+               dataKey="count" 
+               fill={gradient ? `url(#gradient-0)` : colors[0]} 
+               radius={[6, 6, 0, 0]} 
+               barSize={24}
+               animationDuration={1500}
+             />
+             {/* Line for the secondary metric (progress) */}
+             <Line 
+               yAxisId="right"
+               name={props.lineName || "Progress"}
+               type="monotone" 
+               dataKey="progress" 
+               stroke={colors[1] || theme.palette.secondary.main} 
+               strokeWidth={4} 
+               dot={{ r: 4, strokeWidth: 2, fill: theme.palette.background.paper }} 
+               activeDot={{ r: 6, strokeWidth: 0 }}
+               animationDuration={2000}
+             />
+           </ComposedChart>
+         );
 
       default:
         return null;

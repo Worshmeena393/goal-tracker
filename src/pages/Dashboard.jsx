@@ -165,17 +165,33 @@ const sparkleVariants = {
    Utils
 ========================= */
 
-const getCategoryData = (goals = []) => {
+const getCategoryData = (goals = [], t) => {
   const map = {};
-  (goals || []).forEach((g) => {
-    const category = g.category || "Other";
-    map[category] = (map[category] || 0) + 1;
+  const categories = ["Personal", "Work", "Health", "Study", "Other"];
+  
+  // Initialize with predefined categories to ensure a balanced look
+  categories.forEach(cat => {
+    map[cat] = { count: 0, progress: 0 };
   });
 
-  return Object.entries(map).map(([category, count]) => ({
-    category,
-    count,
-  }));
+  (goals || []).forEach((g) => {
+    const category = g.category || "Other";
+    if (!map[category]) {
+      map[category] = { count: 0, progress: 0 };
+    }
+    map[category].count += 1;
+    const progressPercent = Math.min(Math.round((g.progress / g.target) * 100), 100);
+    map[category].progress += progressPercent;
+  });
+
+  return Object.entries(map)
+    .map(([category, data]) => ({
+      name: t(`cat${category}`) !== `cat${category}` ? t(`cat${category}`) : category,
+      count: data.count,
+      progress: data.count > 0 ? Math.round(data.progress / data.count) : 0,
+      fullMark: 100
+    }))
+    .filter(d => d.count > 0 || categories.includes(d.name)); // Keep predefined or those with goals
 };
 
 const getStatusData = (goals = [], t) => [
@@ -309,7 +325,7 @@ function Dashboard() {
     goals.filter(g => g.status === "active").slice(0, 6),
   [goals]);
 
-  const categoryData = useMemo(() => getCategoryData(goals), [goals]);
+  const categoryData = useMemo(() => getCategoryData(goals, t), [goals, t]);
   const statusData = useMemo(() => getStatusData(goals, t), [goals, t]);
   const hasStatusData = statusData.some((s) => s.value > 0);
 
@@ -558,25 +574,24 @@ function Dashboard() {
                           </Avatar>
                           <Box>
                             <Typography variant="h6" sx={{ fontWeight: 900, fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' } }}>
-                              {t("overallDistribution")}
+                              {t("categoryPerformance") || "Category Performance"}
                             </Typography>
                             <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                              {t("categoryBreakdown")}
+                              {t("balanceAndProgress") || "Balance and Progress Overview"}
                             </Typography>
                           </Box>
                         </Box>
                         <Box sx={{ flexGrow: 1, height: { xs: 250, sm: 280, md: 300 }, width: "100%" }}>
                           {categoryData.length > 0 ? (
                             <AdvancedChart
-                              type="bar"
+                              type="radar"
                               data={categoryData.map(d => ({ 
-                                name: t(`cat${d.category}`) !== `cat${d.category}` ? t(`cat${d.category}`) : d.category, 
-                                value: d.count 
+                                subject: d.name,
+                                value: d.progress 
                               }))}
-                              colors={CHART_COLORS}
+                              colors={[theme.palette.primary.main]}
                               height={280}
-                              showGrid={false}
-                              margin={{ top: 10, right: 10, left: -20, bottom: 30 }}
+                              name={t("avgProgress") || "Avg. Progress"}
                             />
                           ) : (
                             <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
