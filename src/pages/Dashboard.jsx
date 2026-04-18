@@ -725,13 +725,13 @@ function Dashboard() {
                 <AnimatePresence mode="popLayout">
                   {loading ? (
                     [1, 2, 3, 4, 5].map((i) => (
-                      <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={`skeleton-goal-${i}`}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={`skeleton-goal-${i}`} sx={{ display: 'flex' }}>
                         <SkeletonCard height={280} />
                       </Grid>
                     ))
                   ) : activeGoals.length > 0 ? (
                     activeGoals.map((goal) => (
-                      <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={goal.id}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={goal.id} sx={{ display: 'flex' }}>
                         <GoalCard
                           goal={goal}
                           onLog={logProgress}

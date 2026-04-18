@@ -1,94 +1,79 @@
-# ?? Goal Tracker � Week 6 Assignment
+# 🎯 Goal Tracker - Professional Gamified Productivity Platform
 
-A responsive React + Vite app for tracking goals, progress, and category performance with multilingual RTL support.
+A high-performance, professional goal-tracking application built with **React**, **Material UI**, and **Framer Motion**. This platform transforms productivity into an engaging, gamified experience.
 
----
+![Goal Tracker Preview](https://via.placeholder.com/1200x600?text=Goal+Tracker+Dashboard+Preview)
 
-## ?? Overview
+## ✨ Core Features
 
-This project meets the Week 6 assignment requirements with:
+### 📊 Advanced Analytics
+- **Radar Charts**: Visualize your category performance and balance at a glance.
+- **Dual-Axis Composed Charts**: Track both the quantity of goals and the quality of progress simultaneously.
+- **Real-time Stats**: Instant calculation of completion rates, active streaks, and overall productivity.
 
-* Multi-page navigation using React Router
-* Goal creation, update, delete, pause, and resume
-* Progress tracking and completion calculation
-* English + Persian language support with RTL/LTR layout
-* LocalStorage persistence for saved goals
-* Clean, responsive UI built with Material UI (MUI)
+### 🎮 Gamification Engine
+- **XP & Leveling**: Earn experience points for every log and goal completion.
+- **Dynamic Leveling**: Watch your profile level up as you achieve your milestones.
+- **Visual Rewards**: Confetti and animations to celebrate your successes.
 
----
+### 🧩 Premium Goal Management
+- **Professional Form UI**: Modern interactive stickers for categories and goal types instead of boring dropdowns.
+- **Flexible Logging**: Easily update progress for count-based, time-based, or daily goals.
+- **Smart Status Control**: Pause, resume, or edit your goals with a single click.
 
-## ?? Pages
+### 🌍 Universal Accessibility
+- **Full Localization**: Seamlessly switch between English and Persian.
+- **RTL Support**: Optimized layout for right-to-left languages.
+- **Dark & Light Mode**: A beautiful, eye-friendly experience in any lighting condition.
 
-| Route               | Description                                 |
-| ------------------- | ------------------------------------------- |
-| `/` or `/dashboard` | Dashboard with active goals and stats       |
-| `/goals`            | Goal library with search, filters, and delete |
-| `/goals/new`        | Create a new goal or edit an existing one   |
-| `/goals/:id`        | Goal details, logs, and delete confirmation |
-| `/categories`       | Compact category analytics and progress summary |
-| `/settings`         | Theme and language settings                 |
-| `*`                 | 404 Not Found page                          |
+## 🚀 Tech Stack
 
----
+- **Frontend**: [React.js](https://reactjs.org/) (Vite)
+- **UI Components**: [Material UI (MUI)](https://mui.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Data Visualization**: [Recharts](https://recharts.org/)
+- **Icons**: [MUI Icons](https://mui.com/material-ui/material-icons/)
+- **Localization**: Custom Context-based I18n system
+- **State Management**: React Context API
 
-## ? Features
+## 📦 Project Structure
 
-* Create, edit, and delete goals
-* Pause and resume active goals
-* Log progress with automatic percentage updates
-* Compact category summary card for Total Goals and Avg. Progress
-* Responsive layout for desktop and mobile
-* Notifications for goal actions and category updates
-
----
-
-## ?? Implementation
-
-* `GoalsContext` manages all goals and persistence
-* `LanguageContext` handles English and Persian translations
-* `Categories` page now shows a short, compact summary card
-* `GoalCard` actions are optimized for mobile and desktop
-
----
-
-## ??? Tech Stack
-
-* React 18
-* Vite
-* React Router DOM
-* Material UI (MUI)
-* Framer Motion
-* Recharts
-* LocalStorage
-
----
-
-## ?? Run the App
-
-### Prerequisites
-
-* Node.js 16+
-* npm 8+
-
-### Commands
-
-```bash
-cd d:/goal-tracker/goal-tracker
-npm install
-npm run dev
+```text
+src/
+├── components/      # Reusable UI elements (Charts, Cards, Navigation)
+├── context/         # Global state providers (Goals, Language, Theme)
+├── hooks/           # Custom React hooks (LocalStorage, Shortcuts)
+├── pages/           # Main application views (Dashboard, Goals, Settings)
+├── styles/          # Modular CSS and theme configurations
+└── data/            # Sample data and constants
 ```
 
-Open the app at:
+## 🛠️ Installation & Development
 
-```bash
-http://localhost:5173
-```
+1. **Clone the repo**:
+   ```bash
+   git clone https://github.com/your-username/goal-tracker.git
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Start the engine**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production**:
+   ```bash
+   npm run build
+   ```
+
+## 🌟 Why Goal Tracker?
+
+Unlike traditional to-do lists, **Goal Tracker** focus on the *journey*. By combining deep analytical insights with a rewarding gamification system, it helps you stay motivated and provides a "100% perfect" visual summary of your life's progress.
 
 ---
 
-## ?? Status
-
-* `npm run build` � passes
-* `npm run lint` � no critical errors
-* Category summary is compact and short
-* Goal delete buttons are stable and visible
+Designed and developed with ❤️ for achievers.

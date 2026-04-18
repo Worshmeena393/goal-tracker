@@ -339,17 +339,17 @@ function Goals() {
         </Paper>
 
         {/* GOALS GRID */}
-        <Grid container spacing={{ xs: 2, sm: 2.5, md: 3 }} justifyContent="center">
+        <Grid container spacing={{ xs: 2, sm: 2.5, md: 3 }}>
           <AnimatePresence mode="popLayout">
             {loading ? (
               [1, 2, 3, 4, 5, 6].map((i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`skeleton-goal-${i}`}>
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={`skeleton-goal-${i}`} sx={{ display: 'flex' }}>
                   <SkeletonCard height={300} />
                 </Grid>
               ))
             ) : paginatedGoals.length > 0 ? (
               paginatedGoals.map((goal) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={goal.id} component={motion.div} layout variants={itemVariants} exit={{ opacity: 0, scale: 0.9 }}>
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={goal.id} component={motion.div} layout variants={itemVariants} exit={{ opacity: 0, scale: 0.9 }} sx={{ display: 'flex' }}>
                   <GoalCard
                     goal={goal}
                     onLog={handleLogProgress}

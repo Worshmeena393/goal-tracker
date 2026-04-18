@@ -55,7 +55,7 @@ const GoalCard = ({
           height: "100%",
           borderRadius: { xs: 3, sm: 4 },
           position: "relative",
-          overflow: "hidden",
+          overflow: "hidden", // Reverting to hidden as we won't have floating buttons anymore
           display: "flex",
           flexDirection: "column",
           transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -82,6 +82,7 @@ const GoalCard = ({
             left: 0,
             width: "100%",
             height: 5,
+            borderRadius: "4px 4px 0 0",
             background:
               goal.status === "active"
                 ? `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
@@ -91,34 +92,36 @@ const GoalCard = ({
           }}
         />
 
-        <CardContent sx={{ p: 3, flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <CardContent sx={{ p: { xs: 2.5, sm: 3 }, flexGrow: 1, display: "flex", flexDirection: "column" }}>
           {/* Header */}
           <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2, alignItems: "center" }}>
-            <Chip
-              label={t(`cat${goal.category}`) !== `cat${goal.category}` ? t(`cat${goal.category}`) : goal.category}
-              size="small"
-              sx={{
-                fontWeight: 900,
-                bgcolor: alpha(theme.palette.primary.main, 0.1),
-                color: "primary.main",
-                fontSize: "0.65rem",
-                textTransform: "uppercase",
-                letterSpacing: 1,
-              }}
-            />
-            <Chip
-              label={t(goal.status)}
-              size="small"
-              variant="outlined"
-              color={
-                goal.status === "active"
-                  ? "success"
-                  : goal.status === "completed"
-                  ? "secondary"
-                  : "default"
-              }
-              sx={{ fontWeight: 800, fontSize: "0.65rem" }}
-            />
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Chip
+                label={t(`cat${goal.category}`) !== `cat${goal.category}` ? t(`cat${goal.category}`) : goal.category}
+                size="small"
+                sx={{
+                  fontWeight: 900,
+                  bgcolor: alpha(theme.palette.primary.main, 0.1),
+                  color: "primary.main",
+                  fontSize: "0.6rem",
+                  textTransform: "uppercase",
+                  letterSpacing: 0.5,
+                  height: 20
+                }}
+              />
+              <Chip
+                label={t(goal.status).toUpperCase()}
+                size="small"
+                sx={{ 
+                  fontWeight: 900, 
+                  fontSize: "0.6rem",
+                  height: 20,
+                  bgcolor: goal.status === "active" ? alpha(theme.palette.success.main, 0.1) : (goal.status === "completed" ? alpha(theme.palette.info.main, 0.1) : alpha(theme.palette.warning.main, 0.1)),
+                  color: goal.status === "active" ? theme.palette.success.main : (goal.status === "completed" ? theme.palette.info.main : theme.palette.warning.main),
+                  letterSpacing: 0.5
+                }}
+              />
+            </Box>
           </Box>
 
           {/* Title */}
@@ -126,15 +129,20 @@ const GoalCard = ({
             variant="h6"
             sx={{
               fontWeight: 900,
-              mb: 1.5,
-              fontSize: "1.1rem",
-              lineHeight: 1.4,
+              mb: 1,
+              fontSize: "1.05rem",
+              lineHeight: 1.3,
               display: "-webkit-box",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
-              minHeight: 48,
+              minHeight: 42,
+              cursor: 'pointer',
+              color: 'text.primary',
+              transition: 'color 0.2s ease',
+              '&:hover': { color: 'primary.main' }
             }}
+            onClick={() => navigate(`/goals/${goal.id}`)}
           >
             {goal.title}
           </Typography>
@@ -146,10 +154,12 @@ const GoalCard = ({
               sx={{
                 mb: 2,
                 display: "-webkit-box",
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
-                lineHeight: 1.6,
+                lineHeight: 1.4,
+                fontSize: '0.8rem',
+                opacity: 0.8
               }}
             >
               {goal.notes}
@@ -157,171 +167,177 @@ const GoalCard = ({
           )}
 
           {/* Progress Section */}
-          <Box sx={{ mt: "auto", mb: 3 }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1.5, alignItems: 'center' }}>
-              <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          <Box sx={{ mt: "auto", mb: 2.5 }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1, alignItems: 'center' }}>
+              <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5, fontSize: '0.65rem' }}>
                 {t("progress")}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Typography variant="caption" sx={{ fontWeight: 900, color: "primary.main", fontSize: '0.85rem' }}>
-                  {progressPercent}%
-                </Typography>
-              </Box>
+              <Typography variant="caption" sx={{ fontWeight: 900, color: "primary.main", fontSize: '0.75rem' }}>
+                {progressPercent}%
+              </Typography>
             </Box>
-            <Box sx={{ position: 'relative' }}>
+            <Box sx={{ position: 'relative', mb: 1 }}>
               <LinearProgress
                 variant="determinate"
                 value={progressPercent}
                 sx={{
-                  height: 10,
-                  borderRadius: 5,
+                  height: 8,
+                  borderRadius: 4,
                   bgcolor: isDark ? alpha(theme.palette.common.white, 0.05) : alpha(theme.palette.primary.main, 0.05),
                   "& .MuiLinearProgress-bar": {
-                    borderRadius: 5,
+                    borderRadius: 4,
                     background: goal.status === 'active' 
                       ? `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
                       : goal.status === 'completed'
                       ? `linear-gradient(90deg, ${theme.palette.success.main}, ${theme.palette.success.light})`
-                      : theme.palette.grey[400],
+                      : theme.palette.warning.main,
                   },
                 }}
               />
               {goal.status === 'active' && progressPercent < 100 && (
                 <Box
                   component={motion.div}
-                  animate={{ opacity: [0.3, 0.6, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  animate={{ opacity: [0.1, 0.4, 0.1], x: ['-100%', '100%'] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
                   sx={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: `${progressPercent}%`,
+                    width: '40%',
                     height: '100%',
-                    borderRadius: 5,
+                    borderRadius: 4,
                     background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                    pointerEvents: 'none'
                   }}
                 />
               )}
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1.2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography
                 variant="caption"
                 sx={{
                   color: "text.secondary",
                   fontWeight: 800,
-                  fontSize: "0.75rem",
+                  fontSize: "0.7rem",
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 0.5
+                  gap: 0.4
                 }}
               >
                 <Box component="span" sx={{ color: 'primary.main', fontWeight: 900 }}>{goal.progress}</Box>
                 / {goal.target} {t(`unit_${goal.type}`) || t("units")}
               </Typography>
               {goal.endDate && (
-                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.disabled', fontSize: '0.7rem' }}>
-                  {new Date(goal.endDate).toLocaleDateString()}
+                <Typography variant="caption" sx={{ fontWeight: 700, fontSize: '0.65rem', color: 'text.disabled' }}>
+                  {new Date(goal.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                 </Typography>
               )}
             </Box>
           </Box>
 
-          {/* Actions - responsive goal controls */}
+          {/* Actions - Single professional row at bottom */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1.5,
-              pt: 2.5,
+              gap: 1,
+              pt: 2,
+              mt: "auto",
               borderTop: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
               width: '100%',
-              mt: "auto",
             }}
           >
             <Button
               component={motion.button}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              fullWidth
-              size="medium"
               variant="contained"
               disabled={goal.status !== "active"}
               onClick={() => onLog(goal.id)}
-              startIcon={<CheckCircleIcon />}
+              startIcon={<CheckCircleIcon sx={{ fontSize: '18px !important' }} />}
               sx={{
-                flex: 1,
-                height: 44,
+                flex: 2, // Takes more space
+                height: 42,
                 textTransform: "none",
-                fontWeight: 800,
+                fontWeight: 900,
                 borderRadius: 2.5,
-                boxShadow: `0 8px 16px ${alpha(theme.palette.primary.main, 0.2)}`,
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                fontSize: '0.85rem',
+                boxShadow: `0 4px 12px ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all 0.3s ease',
                 '&:hover': {
-                  boxShadow: `0 12px 20px ${alpha(theme.palette.primary.main, 0.3)}`,
+                  boxShadow: `0 6px 15px ${alpha(theme.palette.primary.main, 0.3)}`,
+                  bgcolor: 'primary.dark'
                 },
               }}
             >
               {t("log") || "Log"}
             </Button>
 
-            <Box sx={{ display: 'flex', gap: 0.5 }}>
-              <Tooltip title={goal.status === "active" ? t("pause") : t("resume")} arrow>
-                <IconButton
-                  size="medium"
-                  onClick={() => onToggleStatus(goal.id)}
-                  sx={{
-                    color: goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main,
-                    bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.08),
-                    borderRadius: 2.5,
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.15),
-                      transform: 'translateY(-2px)',
-                    }
-                  }}
-                >
-                  {goal.status === "active" ? <PauseIcon /> : <PlayIcon />}
-                </IconButton>
-              </Tooltip>
+            <Tooltip title={goal.status === "active" ? t("pause") : t("resume")} arrow>
+              <IconButton
+                onClick={() => onToggleStatus(goal.id)}
+                sx={{
+                  flex: 1,
+                  height: 42,
+                  width: 42,
+                  color: goal.status === "active" ? 'warning.main' : 'success.main',
+                  bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.1),
+                  borderRadius: 2.5,
+                  border: '1px solid',
+                  borderColor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.2),
+                  '&:hover': {
+                    bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.2),
+                    transform: 'translateY(-2px)'
+                  }
+                }}
+              >
+                {goal.status === "active" ? <PauseIcon /> : <PlayIcon />}
+              </IconButton>
+            </Tooltip>
 
-              <Tooltip title={t("edit")} arrow>
-                <IconButton
-                  size="medium"
-                  onClick={() => navigate(`/goals/edit/${goal.id}`)}
-                  sx={{
-                    color: theme.palette.info.main,
-                    bgcolor: alpha(theme.palette.info.main, 0.08),
-                    borderRadius: 2.5,
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      bgcolor: alpha(theme.palette.info.main, 0.15),
-                      transform: 'translateY(-2px)',
-                    }
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
+            <Tooltip title={t("edit")} arrow>
+              <IconButton
+                onClick={() => navigate(`/goals/edit/${goal.id}`)}
+                sx={{
+                  flex: 1,
+                  height: 42,
+                  width: 42,
+                  color: 'info.main',
+                  bgcolor: alpha(theme.palette.info.main, 0.1),
+                  borderRadius: 2.5,
+                  border: '1px solid',
+                  borderColor: alpha(theme.palette.info.main, 0.2),
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.info.main, 0.2),
+                    transform: 'translateY(-2px)'
+                  }
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
 
-              <Tooltip title={t("delete")} arrow>
-                <IconButton
-                  size="medium"
-                  onClick={() => onDelete(goal.id)}
-                  sx={{
-                    color: theme.palette.error.main,
-                    bgcolor: alpha(theme.palette.error.main, 0.08),
-                    borderRadius: 2.5,
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      bgcolor: alpha(theme.palette.error.main, 0.15),
-                      transform: 'translateY(-2px)',
-                    }
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            <Tooltip title={t("delete")} arrow>
+              <IconButton
+                onClick={() => onDelete(goal.id)}
+                sx={{
+                  flex: 1,
+                  height: 42,
+                  width: 42,
+                  color: 'white',
+                  bgcolor: theme.palette.error.main,
+                  borderRadius: 2.5,
+                  boxShadow: `0 4px 10px ${alpha(theme.palette.error.main, 0.3)}`,
+                  '&:hover': {
+                    bgcolor: theme.palette.error.dark,
+                    transform: 'translateY(-2px)',
+                    boxShadow: `0 6px 15px ${alpha(theme.palette.error.main, 0.4)}`
+                  }
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </CardContent>
       </Card>
