@@ -49,6 +49,7 @@ const GoalCard = ({
         ease: [0.25, 0.46, 0.45, 0.94],
         hover: { duration: 0.2 }
       }}
+      style={{ height: '100%', width: '100%', display: 'flex' }}
     >
       <Card
         sx={{
@@ -241,11 +242,12 @@ const GoalCard = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1,
-              pt: 2,
+              gap: 1.5,
+              pt: 2.5,
               mt: "auto",
               borderTop: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
               width: '100%',
+              flexWrap: 'nowrap', // Ensure they stay on one line
             }}
           >
             <Button
@@ -257,7 +259,9 @@ const GoalCard = ({
               onClick={() => onLog(goal.id)}
               startIcon={<CheckCircleIcon sx={{ fontSize: '18px !important' }} />}
               sx={{
-                flex: 2, // Takes more space
+                flexGrow: 1, // Let it take available space
+                flexShrink: 1,
+                minWidth: 0,
                 height: 42,
                 textTransform: "none",
                 fontWeight: 900,
@@ -274,71 +278,73 @@ const GoalCard = ({
               {t("log") || "Log"}
             </Button>
 
-            <Tooltip title={goal.status === "active" ? t("pause") : t("resume")} arrow>
-              <IconButton
-                onClick={() => onToggleStatus(goal.id)}
-                sx={{
-                  flex: 1,
-                  height: 42,
-                  width: 42,
-                  color: goal.status === "active" ? 'warning.main' : 'success.main',
-                  bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.1),
-                  borderRadius: 2.5,
-                  border: '1px solid',
-                  borderColor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.2),
-                  '&:hover': {
-                    bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.2),
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-              >
-                {goal.status === "active" ? <PauseIcon /> : <PlayIcon />}
-              </IconButton>
-            </Tooltip>
+            <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+              <Tooltip title={goal.status === "active" ? t("pause") : t("resume")} arrow>
+                <IconButton
+                  onClick={() => onToggleStatus(goal.id)}
+                  sx={{
+                    flexShrink: 0,
+                    height: 42,
+                    width: 42,
+                    color: goal.status === "active" ? 'warning.main' : 'success.main',
+                    bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.1),
+                    borderRadius: 2.5,
+                    border: '1px solid',
+                    borderColor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.2),
+                    '&:hover': {
+                      bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.2),
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  {goal.status === "active" ? <PauseIcon /> : <PlayIcon />}
+                </IconButton>
+              </Tooltip>
 
-            <Tooltip title={t("edit")} arrow>
-              <IconButton
-                onClick={() => navigate(`/goals/edit/${goal.id}`)}
-                sx={{
-                  flex: 1,
-                  height: 42,
-                  width: 42,
-                  color: 'info.main',
-                  bgcolor: alpha(theme.palette.info.main, 0.1),
-                  borderRadius: 2.5,
-                  border: '1px solid',
-                  borderColor: alpha(theme.palette.info.main, 0.2),
-                  '&:hover': {
-                    bgcolor: alpha(theme.palette.info.main, 0.2),
-                    transform: 'translateY(-2px)'
-                  }
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+              <Tooltip title={t("edit")} arrow>
+                <IconButton
+                  onClick={() => navigate(`/goals/edit/${goal.id}`)}
+                  sx={{
+                    flexShrink: 0,
+                    height: 42,
+                    width: 42,
+                    color: 'info.main',
+                    bgcolor: alpha(theme.palette.info.main, 0.1),
+                    borderRadius: 2.5,
+                    border: '1px solid',
+                    borderColor: alpha(theme.palette.info.main, 0.2),
+                    '&:hover': {
+                      bgcolor: alpha(theme.palette.info.main, 0.2),
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
 
-            <Tooltip title={t("delete")} arrow>
-              <IconButton
-                onClick={() => onDelete(goal.id)}
-                sx={{
-                  flex: 1,
-                  height: 42,
-                  width: 42,
-                  color: 'white',
-                  bgcolor: theme.palette.error.main,
-                  borderRadius: 2.5,
-                  boxShadow: `0 4px 10px ${alpha(theme.palette.error.main, 0.3)}`,
-                  '&:hover': {
-                    bgcolor: theme.palette.error.dark,
-                    transform: 'translateY(-2px)',
-                    boxShadow: `0 6px 15px ${alpha(theme.palette.error.main, 0.4)}`
-                  }
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
+              <Tooltip title={t("delete")} arrow>
+                <IconButton
+                  onClick={() => onDelete(goal.id)}
+                  sx={{
+                    flexShrink: 0,
+                    height: 42,
+                    width: 42,
+                    color: 'white',
+                    bgcolor: theme.palette.error.main,
+                    borderRadius: 2.5,
+                    boxShadow: `0 4px 10px ${alpha(theme.palette.error.main, 0.3)}`,
+                    '&:hover': {
+                      bgcolor: theme.palette.error.dark,
+                      transform: 'translateY(-2px)',
+                      boxShadow: `0 6px 15px ${alpha(theme.palette.error.main, 0.4)}`
+                    }
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
         </CardContent>
       </Card>

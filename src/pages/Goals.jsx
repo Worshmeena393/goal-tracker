@@ -167,15 +167,9 @@ function Goals() {
 
   return (
     <Container
-      maxWidth={false}
-      disableGutters
+      maxWidth="xl"
       sx={{
-        width: '100%',
-        minHeight: '100vh',
-        maxWidth: 1600,
-        mx: 'auto',
         py: { xs: 3, sm: 4, md: 6 },
-        px: { xs: 2, sm: 3, md: 4 },
       }}
     >
       <motion.div initial="hidden" animate="visible" variants={containerVariants}>
@@ -339,18 +333,24 @@ function Goals() {
         </Paper>
 
         {/* GOALS GRID */}
-        <Grid container spacing={{ xs: 3, sm: 4, md: 5 }}>
+        <Grid container spacing={{ xs: 4, sm: 5, md: 6 }}>
           <AnimatePresence mode="popLayout">
             {loading ? (
               [1, 2, 3, 4, 5, 6].map((i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={`skeleton-goal-${i}`} sx={{ display: 'flex' }}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={4} key={`skeleton-goal-${i}`} sx={{ display: 'flex' }}>
                   <SkeletonCard height={300} />
                 </Grid>
               ))
             ) : paginatedGoals.length > 0 ? (
               paginatedGoals.map((goal) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={goal.id} component={motion.div} layout variants={itemVariants} exit={{ opacity: 0, scale: 0.9 }} sx={{ display: 'flex' }}>
-                  <Box sx={{ width: '100%', height: '100%', display: 'flex', p: 1.5 }}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={4} key={goal.id} sx={{ display: 'flex' }}>
+                  <Box 
+                    component={motion.div} 
+                    layout 
+                    variants={itemVariants} 
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    sx={{ width: '100%', height: '100%', display: 'flex' }}
+                  >
                     <GoalCard
                       goal={goal}
                       onLog={handleLogProgress}
