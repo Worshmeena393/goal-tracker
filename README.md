@@ -283,11 +283,5 @@ http://localhost:5173
 This project provides a structured and user-friendly way to manage goals, track progress, and stay motivated through gamification and analytics.
 
 
-## 📸 Screenshots
+## 📸 Screenshots are available for mobile, loptop, and tablet
 
-### Desktop
-
-### Mobile
-
-
----
