@@ -79,12 +79,11 @@ function NewGoal() {
   const [customCategory, setCustomCategory] = useState("");
 
   const location = useLocation();
+  const categoryParam = useMemo(() => new URLSearchParams(location.search).get("category"), [location.search]);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     // Check if category is passed via URL query params
-    const searchParams = new URLSearchParams(location.search);
-    const categoryParam = searchParams.get("category");
-    
     if (categoryParam) {
       setFormData(prev => ({ ...prev, category: categoryParam }));
     }
@@ -103,7 +102,8 @@ function NewGoal() {
         });
       }
     }
-  }, [isEdit, id, goals]);
+  }, [isEdit, id, goals, categoryParam]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleChange = (e) => {
     const { name, value } = e.target;

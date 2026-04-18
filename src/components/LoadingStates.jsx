@@ -149,12 +149,12 @@ const SkeletonChart = ({ height = 300 }) => {
       <Box sx={{ height, borderRadius: 2, backgroundColor: 'grey.100', p: 2 }}>
         <Skeleton variant="text" width={150} height={24} sx={{ mb: 2 }} />
         <Box sx={{ height: height - 60, display: 'flex', alignItems: 'flex-end', gap: 1 }}>
-          {[...Array(6)].map((_, index) => (
+          {[80, 120, 95, 70, 130, 105].map((barHeight, index) => (
             <Skeleton
               key={index}
               variant="rectangular"
               width="100%"
-              height={Math.random() * 100 + 50}
+              height={barHeight}
               sx={{ borderRadius: 1 }}
             />
           ))}

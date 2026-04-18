@@ -147,20 +147,6 @@ const floatVariants = {
   },
 };
 
-const sparkleVariants = {
-  initial: { scale: 0, opacity: 0 },
-  animate: { 
-    scale: [0, 1, 0],
-    opacity: [0, 1, 0],
-    transition: { 
-      duration: 2, 
-      repeat: Infinity, 
-      ease: "easeInOut",
-      delay: Math.random() * 2
-    }
-  },
-};
-
 /* =========================
    Utils
 ========================= */
@@ -202,9 +188,10 @@ const getStatusData = (goals = [], t) => [
 
 /* ========================= */
 
-function StatCard({ title, value, color, icon: Icon, trend }) {
+function StatCard({ title, value, color, icon }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const IconComponent = icon;
 
   return (
     <motion.div variants={statCardVariants} style={{ height: '100%' }}>
@@ -242,7 +229,7 @@ function StatCard({ title, value, color, icon: Icon, trend }) {
         }}
       >
         {/* Background Decorative Icon */}
-        <Icon className="stat-icon-bg" sx={{ 
+        <IconComponent className="stat-icon-bg" sx={{ 
           position: 'absolute', 
           right: -10, 
           bottom: -10, 
@@ -263,7 +250,7 @@ function StatCard({ title, value, color, icon: Icon, trend }) {
             boxShadow: isDark ? 'none' : '0 4px 12px rgba(0,0,0,0.1)',
           }}
         >
-          <Icon sx={{ fontSize: { xs: 22, sm: 26, md: 30 } }} />
+          <IconComponent sx={{ fontSize: { xs: 22, sm: 26, md: 30 } }} />
         </Avatar>
         
         {/* Text content */}
@@ -305,7 +292,8 @@ function StatCard({ title, value, color, icon: Icon, trend }) {
 
 function Dashboard() {
   const { goals, userStats, completionRate, deleteGoal, toggleGoalStatus, logProgress, exportGoals, loading } = useContext(GoalsContext);
-  const { t, direction } = useContext(LanguageContext);
+  const { t } = useContext(LanguageContext);
+  const { showNotification } = useNotification();
   const navigate = useNavigate();
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
