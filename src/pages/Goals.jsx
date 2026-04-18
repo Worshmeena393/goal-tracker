@@ -175,10 +175,7 @@ function Goals() {
       <motion.div initial="hidden" animate="visible" variants={containerVariants}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", mb: { xs: 2, sm: 2.5, md: 3 }, flexWrap: "wrap", gap: { xs: 1, sm: 1.5, md: 2 } }}>
           <Box>
-            <Typography variant="overline" sx={{ letterSpacing: { xs: 0.5, sm: 0.75, md: 1 }, color: "primary.main", fontWeight: 700, fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.8rem' } }}>
-              {t("goals").toUpperCase()}
-            </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>{t("manageJourney")}</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800, fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>{t("goals")}</Typography>
           </Box>
           <Button
             component={motion.button}

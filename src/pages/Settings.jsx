@@ -99,9 +99,6 @@ function Settings() {
     <Container maxWidth="md" sx={{ py: 3 }}>
       <motion.div initial="hidden" animate="visible" variants={containerVariants}>
         <Box sx={{ mb: 3 }}>
-          <Typography variant="overline" sx={{ letterSpacing: 1.5, color: "primary.main", fontWeight: 800, fontSize: '0.7rem' }}>
-            {t("settings").toUpperCase()}
-          </Typography>
           <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: '-0.02em', fontSize: '1.4rem' }}>{t("settings")}</Typography>
         </Box>
 
@@ -303,8 +300,8 @@ function Settings() {
                   <RestartAltIcon sx={{ fontSize: 18 }} />
                 </Avatar>
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 900, fontSize: '0.9rem' }}>Data Management</Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>Reset your goals and progress data</Typography>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 900, fontSize: '0.9rem' }}>{t("dataManagement")}</Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>{t("resetDataDesc")}</Typography>
                 </Box>
               </Box>
 
@@ -312,9 +309,9 @@ function Settings() {
               
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
                 <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 800, mb: 0.25 }}>Reset All Data</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 800, mb: 0.25 }}>{t("resetAllData")}</Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500, maxWidth: 300, display: 'block' }}>
-                    Clear all goals, progress, and XP data. This action cannot be undone.
+                    {t("clearDataDesc")}
                   </Typography>
                 </Box>
                 <Button
@@ -327,13 +324,13 @@ function Settings() {
                     borderRadius: 2, 
                     px: 2, 
                     py: 0.75, 
-                    fontWeight: 800, 
+                    fontWeight: 900, 
                     fontSize: '0.75rem',
-                    borderWidth: 1,
-                    '&:hover': { borderWidth: 1, bgcolor: alpha(theme.palette.warning.main, 0.05) } 
+                    borderWidth: 1.5,
+                    '&:hover': { borderWidth: 1.5, bgcolor: alpha(theme.palette.warning.main, 0.05) } 
                   }}
                 >
-                  Reset Data
+                  {t("reset") || "Reset"}
                 </Button>
               </Box>
             </Paper>
@@ -352,10 +349,10 @@ function Settings() {
                   borderRadius: 2, 
                   px: 3, 
                   py: 0.75, 
-                  fontWeight: 800, 
+                  fontWeight: 900, 
                   fontSize: '0.75rem',
-                  borderWidth: 1,
-                  '&:hover': { borderWidth: 1, bgcolor: alpha(theme.palette.error.main, 0.05) } 
+                  borderWidth: 1.5,
+                  '&:hover': { borderWidth: 1.5, bgcolor: alpha(theme.palette.error.main, 0.05) } 
                 }}
               >
                 {t("resetSettings")}
@@ -365,45 +362,98 @@ function Settings() {
         </Grid>
       </motion.div>
 
-      {/* Reset Confirmation Dialog */}
+      {/* Reset Settings Confirmation Dialog */}
       <Dialog
         open={openResetDialog}
         onClose={() => setOpenResetDialog(false)}
         PaperProps={{
           sx: {
-            borderRadius: 4,
-            p: 1,
-            boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+            borderRadius: 5,
+            p: 1.5,
+            boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
+            maxWidth: 400
           }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 900, fontSize: '1.2rem', pb: 1 }}>
-          {t("confirmReset") || "Are you sure?"}
+        <DialogTitle sx={{ fontWeight: 900, fontSize: { xs: '1.2rem', sm: '1.4rem' }, pb: 1 }}>
+          {t("confirmReset")}
         </DialogTitle>
         <DialogContent sx={{ pb: 2 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-            {t("confirmResetDesc") || "This will reset all your settings (theme, font size, language) to default values. This action cannot be undone."}
+          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, lineHeight: 1.6 }}>
+            {t("confirmResetDesc")}
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 3, gap: 1 }}>
+        <DialogActions sx={{ px: 3, pb: 3, gap: 1.5 }}>
           <Button 
             onClick={() => setOpenResetDialog(false)}
-            sx={{ fontWeight: 700, color: 'text.secondary' }}
+            sx={{ fontWeight: 800, color: 'text.secondary', borderRadius: 3 }}
           >
-            {t("cancel") || "Cancel"}
+            {t("cancel")}
           </Button>
           <Button 
             onClick={handleReset} 
             variant="contained" 
             color="error"
             sx={{ 
-              fontWeight: 800, 
-              borderRadius: 2, 
-              px: 3,
-              boxShadow: `0 8px 16px ${alpha(theme.palette.error.main, 0.2)}`
+              fontWeight: 900, 
+              borderRadius: 3, 
+              px: 4,
+              boxShadow: `0 8px 20px ${alpha(theme.palette.error.main, 0.25)}`,
+              '&:hover': {
+                bgcolor: 'error.dark',
+                boxShadow: `0 12px 25px ${alpha(theme.palette.error.main, 0.35)}`,
+              }
             }}
           >
-            {t("confirm") || "Reset Now"}
+            {t("confirm")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Data Reset Confirmation Dialog */}
+      <Dialog
+        open={openDataResetDialog}
+        onClose={() => setOpenDataResetDialog(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 5,
+            p: 1.5,
+            boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
+            maxWidth: 400
+          }
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 900, fontSize: { xs: '1.2rem', sm: '1.4rem' }, pb: 1 }}>
+          {t("confirmDataReset")}
+        </DialogTitle>
+        <DialogContent sx={{ pb: 2 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, lineHeight: 1.6 }}>
+            {t("confirmDataResetDesc")}
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 3, gap: 1.5 }}>
+          <Button 
+            onClick={() => setOpenDataResetDialog(false)}
+            sx={{ fontWeight: 800, color: 'text.secondary', borderRadius: 3 }}
+          >
+            {t("cancel")}
+          </Button>
+          <Button 
+            onClick={handleDataReset} 
+            variant="contained" 
+            color="error"
+            sx={{ 
+              fontWeight: 900, 
+              borderRadius: 3, 
+              px: 4,
+              boxShadow: `0 8px 20px ${alpha(theme.palette.error.main, 0.25)}`,
+              '&:hover': {
+                bgcolor: 'error.dark',
+                boxShadow: `0 12px 25px ${alpha(theme.palette.error.main, 0.35)}`,
+              }
+            }}
+          >
+            {t("resetAllData")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -186,11 +186,8 @@ function Categories() {
 
           <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <Box>
-              <Typography variant="overline" sx={{ letterSpacing: 3, color: "primary.main", fontWeight: 900, fontSize: '0.75rem', display: 'block', mb: 1 }}>
-                {t("categories").toUpperCase()}
-              </Typography>
               <Typography variant="h3" sx={{ fontWeight: 900, letterSpacing: '-0.03em', mb: 1.5, fontSize: { xs: '2rem', md: '2.5rem' } }}>
-                {t("performanceOverview") || "Performance Overview"}
+                {t("categories")}
               </Typography>
               <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, maxWidth: 700, lineHeight: 1.6, fontSize: '1.1rem' }}>
                 {t("visualSummary") || "A complete visual summary of your journey across all categories."}

@@ -20,6 +20,7 @@ A high-performance, professional goal-tracking application built with **React**,
 - **Professional Form UI**: Modern interactive stickers for categories and goal types instead of boring dropdowns.
 - **Flexible Logging**: Easily update progress for count-based, time-based, or daily goals.
 - **Smart Status Control**: Pause, resume, or edit your goals with a single click.
+- **Secure Data Management**: Professional tools to reset settings or clear all progress data with safety confirmations.
 
 ### 🌍 Universal Accessibility
 - **Full Localization**: Seamlessly switch between English and Persian.
@@ -72,7 +73,7 @@ src/
 
 ## 🌟 Why Goal Tracker?
 
-Unlike traditional to-do lists, **Goal Tracker** focus on the *journey*. By combining deep analytical insights with a rewarding gamification system, it helps you stay motivated and provides a "100% perfect" visual summary of your life's progress.
+Unlike traditional to-do lists, **Goal Tracker** focuses on the *journey*. By combining deep analytical insights with a rewarding gamification system, it helps you stay motivated and provides a "100% perfect" visual summary of your life's progress.
 
 ---
 
