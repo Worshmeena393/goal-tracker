@@ -217,7 +217,7 @@ function NewGoal() {
 
   return (
     <motion.div initial="hidden" animate="visible" variants={CONTAINER_VARIANTS}>
-      <Container maxWidth="md" sx={{ py: { xs: 4, sm: 6, md: 8 } }}>
+      <Container maxWidth="sm" sx={{ py: { xs: 4, sm: 6, md: 8 } }}>
         <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', gap: 2.5 }}>
           <Button 
             onClick={() => navigate(-1)} 

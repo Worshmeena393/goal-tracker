@@ -6,11 +6,10 @@ import {
   Box,
   Chip,
   IconButton,
-  Tooltip,
   LinearProgress,
   useTheme,
   alpha,
-  Button,
+  Tooltip,
 } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
@@ -168,98 +167,127 @@ const GoalCard = ({
             </Typography>
           </Box>
 
-          {/* Actions - Redesigned as requested */}
+          {/* Actions - responsive goal controls */}
           <Box
             sx={{
-              display: "flex",
-              pt: 2,
+              display: "grid",
+              gridTemplateColumns: { xs: "repeat(2, minmax(0, 1fr))", sm: "repeat(4, minmax(0, 1fr))" },
+              gap: 1,
+              pt: 1.5,
               borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-              justifyContent: "space-between",
-              alignItems: "center",
+              width: '100%',
             }}
           >
-            <Tooltip title={t("logProgress")}>
-              <IconButton
-                size="small"
-                onClick={() => onLog(goal.id)}
-                disabled={goal.status !== "active"}
-                sx={{
-                  bgcolor: alpha(theme.palette.primary.main, 0.1),
-                  color: "primary.main",
-                  borderRadius: 2,
-                  p: 1,
-                  "&:hover": {
-                    bgcolor: "primary.main",
-                    color: "white",
-                    transform: "scale(1.1)",
-                  },
-                }}
-              >
-                <CheckCircleIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+              <Tooltip title={t("logProgress")}>
+                <IconButton
+                  size="small"
+                  aria-label={t("logProgress")}
+                  onClick={() => onLog(goal.id)}
+                  disabled={goal.status !== "active"}
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    color: "primary.main",
+                    borderRadius: 2,
+                    "&:hover": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      transform: "scale(1.08)",
+                    },
+                  }}
+                >
+                  <CheckCircleIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
+                {t("logProgress")}
+              </Typography>
+            </Box>
 
-            <Tooltip title={goal.status === "active" ? t("pause") : t("resume")}>
-              <IconButton
-                size="small"
-                onClick={() => onToggleStatus(goal.id)}
-                sx={{
-                  bgcolor: alpha(theme.palette.grey[500], 0.1),
-                  borderRadius: 2,
-                  p: 1,
-                  "&:hover": {
-                    bgcolor: alpha(theme.palette.grey[500], 0.2),
-                    transform: "scale(1.1)",
-                  },
-                }}
-              >
-                {goal.status === "active" ? (
-                  <PauseIcon fontSize="small" />
-                ) : (
-                  <PlayIcon fontSize="small" />
-                )}
-              </IconButton>
-            </Tooltip>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+              <Tooltip title={goal.status === "active" ? t("pause") : t("resume")}>
+                <IconButton
+                  size="small"
+                  aria-label={goal.status === "active" ? t("pause") : t("resume")}
+                  onClick={() => onToggleStatus(goal.id)}
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    bgcolor: alpha(theme.palette.grey[500], 0.1),
+                    borderRadius: 2,
+                    "&:hover": {
+                      bgcolor: alpha(theme.palette.grey[500], 0.2),
+                      transform: "scale(1.08)",
+                    },
+                  }}
+                >
+                  {goal.status === "active" ? (
+                    <PauseIcon fontSize="small" />
+                  ) : (
+                    <PlayIcon fontSize="small" />
+                  )}
+                </IconButton>
+              </Tooltip>
+              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
+                {goal.status === "active" ? t("pause") : t("resume")}
+              </Typography>
+            </Box>
 
-            <Tooltip title={t("edit")}>
-              <IconButton
-                size="small"
-                onClick={() => navigate(`/goals/edit/${goal.id}`)}
-                sx={{
-                  bgcolor: alpha(theme.palette.info.main, 0.1),
-                  color: "info.main",
-                  borderRadius: 2,
-                  p: 1,
-                  "&:hover": {
-                    bgcolor: "info.main",
-                    color: "white",
-                    transform: "scale(1.1)",
-                  },
-                }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+              <Tooltip title={t("edit")}>
+                <IconButton
+                  size="small"
+                  aria-label={t("edit")}
+                  onClick={() => navigate(`/goals/edit/${goal.id}`)}
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    bgcolor: alpha(theme.palette.info.main, 0.1),
+                    color: "info.main",
+                    borderRadius: 2,
+                    "&:hover": {
+                      bgcolor: "info.main",
+                      color: "white",
+                      transform: "scale(1.08)",
+                    },
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
+                {t("edit")}
+              </Typography>
+            </Box>
 
-            <Tooltip title={t("delete")}>
-              <IconButton
-                size="small"
-                onClick={() => onDelete(goal.id)}
-                sx={{
-                  bgcolor: alpha(theme.palette.error.main, 0.1),
-                  color: "error.main",
-                  borderRadius: 2,
-                  p: 1,
-                  "&:hover": {
-                    bgcolor: "error.main",
-                    color: "white",
-                    transform: "scale(1.1)",
-                  },
-                }}
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+              <Tooltip title={t("delete")}>
+                <IconButton
+                  size="small"
+                  aria-label={t("delete")}
+                  onClick={() => onDelete(goal.id)}
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    bgcolor: alpha(theme.palette.error.main, 0.1),
+                    color: "error.main",
+                    borderRadius: 2,
+                    "&:hover": {
+                      bgcolor: "error.main",
+                      color: "white",
+                      transform: "scale(1.08)",
+                    },
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
+                {t("delete")}
+              </Typography>
+            </Box>
           </Box>
         </CardContent>
       </Card>

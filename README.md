@@ -1,181 +1,57 @@
-# 🎯 Goal Tracker — Week 6 Assignment
+# ?? Goal Tracker � Week 6 Assignment
 
-A responsive, multi-page React application for managing goals, tracking progress, and visualizing productivity through a gamified dashboard.
-
----
-
-## 🚀 Overview
-
-This project is designed to meet all Week 6 assignment requirements by providing a full-featured goal tracking system with:
-
-* Multi-page navigation
-* Real-time progress tracking
-* Gamification (XP & streaks)
-* RTL/LTR multilingual support
-* Persistent storage using LocalStorage
+A responsive React + Vite app for tracking goals, progress, and category performance with multilingual RTL support.
 
 ---
 
-## ✅ Assignment Compliance Checklist
+## ?? Overview
 
-### ✔ Required Tech Constraints
+This project meets the Week 6 assignment requirements with:
 
-* React + Vite
-* React Router (multi-page navigation)
-* Two languages (English + Persian)
-* RTL ↔ LTR layout switching
-* Responsive UI (desktop + mobile)
-* LocalStorage persistence
-* UI Library: Material UI (MUI)
+* Multi-page navigation using React Router
+* Goal creation, update, delete, pause, and resume
+* Progress tracking and completion calculation
+* English + Persian language support with RTL/LTR layout
+* LocalStorage persistence for saved goals
+* Clean, responsive UI built with Material UI (MUI)
 
 ---
 
-## 📄 Pages (Routes)
+## ?? Pages
 
 | Route               | Description                                 |
 | ------------------- | ------------------------------------------- |
-| `/` or `/dashboard` | Main dashboard with stats and active goals  |
-| `/goals`            | All goals with filters, search, and sorting |
-| `/goals/new`        | Create a new goal                           |
-| `/goals/:id`        | Goal details and progress logs              |
-| `/categories`       | Category analytics and summaries            |
-| `/settings`         | Language and theme settings                 |
+| `/` or `/dashboard` | Dashboard with active goals and stats       |
+| `/goals`            | Goal library with search, filters, and delete |
+| `/goals/new`        | Create a new goal or edit an existing one   |
+| `/goals/:id`        | Goal details, logs, and delete confirmation |
+| `/categories`       | Compact category analytics and progress summary |
+| `/settings`         | Theme and language settings                 |
 | `*`                 | 404 Not Found page                          |
 
 ---
 
-## ⚙️ Core Functionalities
+## ? Features
 
-### 🧩 Goal Management (CRUD)
-
-* Create, edit, delete goals
-* Pause/resume goals
-* Automatic completion detection
-
-### 📊 Progress Tracking
-
-* Log daily or custom progress
-
-* Automatic percentage calculation:
-
-  progress % = (progress / target) × 100
-
-* Progress updates reflected instantly in UI
+* Create, edit, and delete goals
+* Pause and resume active goals
+* Log progress with automatic percentage updates
+* Compact category summary card for Total Goals and Avg. Progress
+* Responsive layout for desktop and mobile
+* Notifications for goal actions and category updates
 
 ---
 
-## 🔥 Gamification System
+## ?? Implementation
 
-### XP Rules
-
-* +20 XP for each progress log
-* +100 XP when a goal is completed
-* XP stored in `userStats.xpTotal`
-
-### Level System
-
-* Level is derived from XP:
-
-  Level = floor(XP / 100)
+* `GoalsContext` manages all goals and persistence
+* `LanguageContext` handles English and Persian translations
+* `Categories` page now shows a short, compact summary card
+* `GoalCard` actions are optimized for mobile and desktop
 
 ---
 
-## 📅 Streak System
-
-### Rules:
-
-* Streak increases if user logs progress on consecutive days
-* If user logs today AND logged yesterday → streak +1
-* If a day is missed → streak resets to 0
-* Only **daily goals** affect streak
-
----
-
-## 🌍 Language & RTL/LTR Support
-
-### Languages:
-
-* English (LTR)
-* Persian (RTL)
-
-### Implementation:
-
-* Language stored in `LanguageContext`
-
-* Layout direction applied using:
-
-  ```html
-  <div dir="ltr"> or <div dir="rtl">
-  ```
-
-* UI dynamically updates when language changes
-
-* MUI theme adapts to RTL layout
-
----
-
-## 🧠 Architecture Overview
-
-```
-src/
-├── components/   # Reusable UI components
-├── pages/        # Route pages
-├── context/      # Global state management
-├── utils/        # Helper functions
-├── data/         # Static data (categories)
-```
-
----
-
-## 🔄 Data Flow
-
-* Goals are managed via `GoalsContext`
-* State updates trigger UI re-render
-* Data is persisted to `localStorage`
-* On reload → data is restored automatically
-
----
-
-## 📦 Data Model (Example)
-
-```js
-{
-  id: 1,
-  title: "Workout",
-  category: "Health",
-  type: "daily",
-  target: 30,
-  progress: 10,
-  status: "active",
-  logs: [
-    { date: "2026-04-10", amount: 1 }
-  ]
-}
-```
-
----
-
-## 🎨 UI Features
-
-* Clean and modern design using MUI
-* Fully responsive (desktop + mobile)
-* Progress bars and cards
-* Icons and action buttons
-* Empty states (no goals, no data)
-* Loading states for better UX
-
----
-
-## ⭐ Bonus Features
-
-* Fake authentication system
-* Charts using Recharts
-* Export goals as JSON
-* Accessibility support (ARIA labels, keyboard navigation)
-
----
-
-## 🛠️ Tech Stack
+## ??? Tech Stack
 
 * React 18
 * Vite
@@ -187,14 +63,14 @@ src/
 
 ---
 
-## ▶️ How to Run
+## ?? Run the App
 
 ### Prerequisites
 
 * Node.js 16+
 * npm 8+
 
-### Setup
+### Commands
 
 ```bash
 cd d:/goal-tracker/goal-tracker
@@ -202,26 +78,17 @@ npm install
 npm run dev
 ```
 
-Open in browser:
+Open the app at:
 
-```
+```bash
 http://localhost:5173
 ```
 
 ---
 
-## 🧪 Project Status
+## ?? Status
 
-* `npm run build` — successful
-* `npm run lint` — no critical errors
-* All required features implemented
-
----
-
-## 📸 Screenshots...
-
-
-
-
-
-
+* `npm run build` � passes
+* `npm run lint` � no critical errors
+* Category summary is compact and short
+* Goal delete buttons are stable and visible
