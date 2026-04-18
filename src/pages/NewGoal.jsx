@@ -65,7 +65,7 @@ function NewGoal() {
     title: "",
     category: "Personal",
     type: "count",
-    timeUnit: "minutes",
+    timeUnit: "hours",
     target: 10,
     progress: 0,
     notes: "",

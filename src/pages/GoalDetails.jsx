@@ -33,6 +33,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import {
   ArrowBack as ArrowBackIcon,
@@ -96,10 +100,11 @@ function GoalDetails() {
   const [editData, setEditData] = useState({
     title: "",
     category: "Personal",
-    timeUnit: "minutes",
+    timeUnit: "hours",
     target: 1,
   });
   const [logAmount, setLogAmount] = useState(1);
+  const [logUnit, setLogUnit] = useState("hours");
 
   // Update edit state when goal is loaded
   useEffect(() => {
@@ -111,6 +116,7 @@ function GoalDetails() {
           timeUnit: goal.timeUnit || "minutes",
           target: goal.target || 1,
         });
+        setLogUnit(goal.timeUnit || "hours");
       }, 0);
     }
   }, [goal]);
@@ -203,6 +209,11 @@ function GoalDetails() {
       setShowAddCategory(false);
       showNotification(t("categoryAdded") || `Category "${newCat}" added!`, "success");
     }
+  };
+
+  const convertToGoalUnit = (amount, fromUnit, toUnit) => {
+    const units = { seconds: 1, minutes: 60, hours: 3600 };
+    return (amount * units[fromUnit]) / units[toUnit];
   };
 
   if (!goal) {
@@ -326,18 +337,34 @@ function GoalDetails() {
                       <Box sx={{ display: "flex", flexDirection: 'column', gap: 2 }}>
                         <Box sx={{ display: 'flex', gap: 1.5 }}>
                           <TextField
-                            label={t("amount")}
+                            label={goal.type === 'time' ? `${t("amount")} (${t(logUnit) || logUnit})` : t("amount")}
                             type="number"
                             value={logAmount}
                             onChange={(e) => setLogAmount(e.target.value)}
                             fullWidth
                             sx={{ "& .MuiOutlinedInput-root": { borderRadius: 3, bgcolor: isDark ? alpha(theme.palette.common.white, 0.03) : 'white' } }}
                           />
+                          {goal.type === 'time' && (
+                            <FormControl fullWidth variant="outlined">
+                              <InputLabel>{t("unit") || "Unit"}</InputLabel>
+                              <Select
+                                value={logUnit}
+                                onChange={(e) => setLogUnit(e.target.value)}
+                                label={t("unit") || "Unit"}
+                                sx={{ borderRadius: 3, bgcolor: isDark ? alpha(theme.palette.common.white, 0.03) : 'white' }}
+                              >
+                                <MenuItem value="seconds">{t("seconds") || "Seconds"}</MenuItem>
+                                <MenuItem value="minutes">{t("minutes") || "Minutes"}</MenuItem>
+                                <MenuItem value="hours">{t("hours") || "Hours"}</MenuItem>
+                              </Select>
+                            </FormControl>
+                          )}
                           <Button
                             variant="contained"
                             disabled={goal.status !== 'active'}
                             onClick={() => {
-                              logProgress(goal.id, Number(logAmount));
+                              const convertedAmount = goal.type === 'time' ? convertToGoalUnit(Number(logAmount), logUnit, goal.timeUnit) : Number(logAmount);
+                              logProgress(goal.id, convertedAmount);
                               setLogAmount(1);
                             }}
                             sx={{ borderRadius: 3, fontWeight: 800, px: 4, boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.25)}` }}
