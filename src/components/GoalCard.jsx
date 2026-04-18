@@ -53,6 +53,7 @@ const GoalCard = ({
       <Card
         sx={{
           height: "100%",
+          width: "100%", // Explicitly setting width to 100%
           borderRadius: { xs: 3, sm: 4 },
           position: "relative",
           overflow: "hidden", // Reverting to hidden as we won't have floating buttons anymore
@@ -63,14 +64,14 @@ const GoalCard = ({
           borderColor: isDark ? alpha(theme.palette.divider, 0.2) : alpha(theme.palette.divider, 0.1),
           bgcolor: isDark ? alpha(theme.palette.background.paper, 0.9) : "white",
           boxShadow: isDark 
-            ? '0 8px 25px rgba(0,0,0,0.15)' 
-            : '0 8px 25px rgba(0,0,0,0.08)',
+            ? '0 10px 30px rgba(0,0,0,0.3)' 
+            : '0 10px 30px rgba(0,0,0,0.06)',
           "&:hover": {
             boxShadow: isDark
-              ? `0 25px 50px -12px rgba(0,0,0,0.4)`
-              : `0 25px 50px -12px ${alpha(theme.palette.primary.main, 0.15)}`,
-            borderColor: alpha(theme.palette.primary.main, 0.2),
-            transform: 'translateY(-4px)',
+              ? `0 20px 40px -12px rgba(0,0,0,0.5)`
+              : `0 20px 40px -12px ${alpha(theme.palette.primary.main, 0.25)}`,
+            borderColor: alpha(theme.palette.primary.main, 0.4),
+            transform: 'translateY(-6px)',
           },
         }}
       >

@@ -721,7 +721,7 @@ function Dashboard() {
                 </Button>
               </Box>
 
-              <Grid container spacing={{ xs: 2, sm: 2.5, md: 3 }}>
+              <Grid container spacing={{ xs: 3, sm: 4, md: 5 }}>
                 <AnimatePresence mode="popLayout">
                   {loading ? (
                     [1, 2, 3, 4, 5].map((i) => (
@@ -732,12 +732,14 @@ function Dashboard() {
                   ) : activeGoals.length > 0 ? (
                     activeGoals.map((goal) => (
                       <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={goal.id} sx={{ display: 'flex' }}>
-                        <GoalCard
-                          goal={goal}
-                          onLog={logProgress}
-                          onToggleStatus={toggleGoalStatus}
-                          onDelete={setDeleteId}
-                        />
+                        <Box sx={{ width: '100%', height: '100%', display: 'flex', p: 1.5 }}>
+                          <GoalCard
+                            goal={goal}
+                            onLog={logProgress}
+                            onToggleStatus={toggleGoalStatus}
+                            onDelete={setDeleteId}
+                          />
+                        </Box>
                       </Grid>
                     ))
                   ) : (
