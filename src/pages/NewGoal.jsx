@@ -217,8 +217,8 @@ function NewGoal() {
 
   return (
     <motion.div initial="hidden" animate="visible" variants={CONTAINER_VARIANTS}>
-      <Container maxWidth="sm" sx={{ py: { xs: 4, sm: 6, md: 8 } }}>
-        <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', gap: 2.5 }}>
+      <Container maxWidth="md" sx={{ width: '100%', mx: 'auto', px: { xs: 2, sm: 3, md: 4 }, py: { xs: 4, sm: 6, md: 8 } }}>
+        <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', gap: 2.5, flexWrap: 'wrap' }}>
           <Button 
             onClick={() => navigate(-1)} 
             sx={{ 
@@ -502,7 +502,7 @@ function NewGoal() {
               </Grid>
 
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mt: 4 }}>
                   <Button
                     fullWidth
                     type="submit"
@@ -522,6 +522,7 @@ function NewGoal() {
                     {isEdit ? t("saveChanges") || "Save Changes" : t("createGoal") || "Create Goal"}
                   </Button>
                   <Button
+                    fullWidth
                     variant="outlined"
                     size="large"
                     onClick={() => navigate(-1)}

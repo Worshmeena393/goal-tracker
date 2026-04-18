@@ -377,9 +377,24 @@ function Dashboard() {
               <Typography component={motion.div} variants={heroTextVariants} variant="h2" gutterBottom sx={{ fontWeight: 900, mb: { xs: 2, sm: 2.5, md: 3 }, lineHeight: 1.1, fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.8rem', lg: '3.5rem' }, letterSpacing: '-0.03em' }}>
                 {t("welcomeBack")} ✨
               </Typography>
-              <Typography component={motion.div} variants={heroTextVariants} variant="body1" sx={{ color: "rgba(255,255,255,0.85)", mb: { xs: 3, sm: 4, md: 5 }, fontWeight: 600, maxWidth: { xs: '100%', md: 550 }, lineHeight: 1.6, fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' } }}>
-                {t("completionSummary")} <Box component="span" sx={{ color: "#fff", fontWeight: 900, px: 1, py: 0.5, bgcolor: 'rgba(255,255,255,0.15)', borderRadius: 2, boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>{completionRateValue}%</Box> {t("targetsSummary")}
-              </Typography>
+              <Box component={motion.div} variants={heroTextVariants} sx={{ mb: { xs: 3, sm: 4, md: 5 }, maxWidth: 550 }}>
+                <Typography variant="body1" sx={{ color: "rgba(255,255,255,0.85)", fontWeight: 600, lineHeight: 1.6, fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' }, mb: 1.5 }}>
+                  {t("completionSummary")} <Box component="span" sx={{ color: "#fff", fontWeight: 900 }}>{completionRateValue}%</Box> {t("targetsSummary")}
+                </Typography>
+                <Box sx={{ width: '100%', height: 6, bgcolor: 'rgba(255,255,255,0.15)', borderRadius: 3, position: 'relative', overflow: 'hidden' }}>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${completionRateValue}%` }}
+                    transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+                    style={{
+                      height: '100%',
+                      background: 'white',
+                      borderRadius: 3,
+                      boxShadow: '0 0 15px rgba(255,255,255,0.5)'
+                    }}
+                  />
+                </Box>
+              </Box>
               
               <Box component={motion.div} variants={heroTextVariants} sx={{ mb: 4, display: { xs: 'flex', md: 'none' } }}>
                 <LevelSticker level={userStats?.level || 1} xp={userStats?.xpTotal || 0} />
@@ -740,18 +755,50 @@ function Dashboard() {
       </motion.div>
 
       {/* Delete Confirmation */}
-      <Dialog
-        open={!!deleteId}
-        onClose={() => setDeleteId(null)}
-        PaperProps={{ sx: { borderRadius: 4, p: 1 } }}
+      <Dialog 
+        open={!!deleteId} 
+        onClose={() => setDeleteId(null)} 
+        PaperProps={{ 
+          sx: { 
+            borderRadius: { xs: 4, sm: 5 }, 
+            p: { xs: 1, sm: 1.5 },
+            maxWidth: 400
+          } 
+        }}
       >
-        <DialogTitle sx={{ fontWeight: 800 }}>{t("confirmDelete")}</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 900, fontSize: { xs: '1.2rem', sm: '1.4rem' }, pb: 1 }}>
+          {t("confirmDelete")}
+        </DialogTitle>
         <DialogContent>
-          <Typography color="text.secondary">{t("confirmDeleteDesc")}</Typography>
+          <Typography sx={{ fontWeight: 600, color: 'text.secondary', lineHeight: 1.6 }}>
+            {t("confirmDeleteDesc") || "Are you sure you want to delete this goal? This action cannot be undone."}
+          </Typography>
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setDeleteId(null)} sx={{ fontWeight: 700 }}>{t("cancel")}</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained" sx={{ borderRadius: 2, fontWeight: 700 }}>{t("delete")}</Button>
+        <DialogActions sx={{ px: { xs: 2, sm: 3 }, pb: { xs: 2, sm: 3 }, pt: 1, gap: 1.5 }}>
+          <Button 
+            onClick={() => setDeleteId(null)} 
+            sx={{ fontWeight: 800, color: 'text.secondary', borderRadius: 3, px: 3 }}
+          >
+            {t("cancel")}
+          </Button>
+          <Button 
+            onClick={handleDeleteConfirm} 
+            color="error" 
+            variant="contained" 
+            startIcon={<DeleteIcon />}
+            sx={{ 
+              borderRadius: 3, 
+              fontWeight: 900, 
+              px: 4,
+              boxShadow: `0 8px 20px ${alpha(theme.palette.error.main, 0.25)}`,
+              '&:hover': {
+                bgcolor: 'error.dark',
+                boxShadow: `0 12px 25px ${alpha(theme.palette.error.main, 0.35)}`,
+              }
+            }}
+          >
+            {t("delete")}
+          </Button>
         </DialogActions>
       </Dialog>
     </Container>

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { SettingsContext } from "../context/SettingsContext";
 import { LanguageContext } from "../context/LanguageContext";
+import { GoalsContext } from "../context/GoalsContext";
 import { useNotification } from "../context/NotificationContext";
 import { motion } from "framer-motion";
 import {
@@ -55,17 +56,27 @@ function Settings() {
     resetSettings,
   } = useContext(SettingsContext);
 
+  const { goals, userStats } = useContext(GoalsContext);
   const { lang, toggleLang, t } = useContext(LanguageContext);
   const { showNotification } = useNotification();
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
   const [openResetDialog, setOpenResetDialog] = useState(false);
+  const [openDataResetDialog, setOpenDataResetDialog] = useState(false);
 
   const handleReset = () => {
     resetSettings();
     setOpenResetDialog(false);
     showNotification(t("settingsReset") || "Settings reset to default", "info");
+  };
+
+  const handleDataReset = () => {
+    // Clear goals and user stats from localStorage
+    localStorage.removeItem("goals");
+    localStorage.removeItem("userStats");
+    // Reload the page to reset the context
+    window.location.reload();
   };
 
   const handleToggleTheme = () => {
@@ -265,6 +276,65 @@ function Settings() {
                   <ToggleButton value="en">English</ToggleButton>
                   <ToggleButton value="fa">فارسی</ToggleButton>
                 </ToggleButtonGroup>
+              </Box>
+            </Paper>
+          </Grid>
+
+          {/* Data Management */}
+          <Grid item xs={12}>
+            <Paper
+              component={motion.div}
+              variants={itemVariants}
+              elevation={0}
+              sx={{
+                p: 2,
+                borderRadius: 4,
+                border: "1px solid",
+                borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
+                bgcolor: isDark ? alpha(theme.palette.background.paper, 0.6) : "white",
+                backdropFilter: 'blur(10px)',
+                boxShadow: isDark ? "0 8px 16px rgba(0,0,0,0.4)" : "0 8px 16px rgba(0,0,0,0.03)",
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2, position: 'relative' }}>
+                <Avatar sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1), color: theme.palette.warning.main, width: 36, height: 36 }}>
+                  <RestartAltIcon sx={{ fontSize: 18 }} />
+                </Avatar>
+                <Box>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 900, fontSize: '0.9rem' }}>Data Management</Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>Reset your goals and progress data</Typography>
+                </Box>
+              </Box>
+
+              <Divider sx={{ mb: 2, opacity: 0.6 }} />
+              
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+                <Box>
+                  <Typography variant="body2" sx={{ fontWeight: 800, mb: 0.25 }}>Reset All Data</Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500, maxWidth: 300, display: 'block' }}>
+                    Clear all goals, progress, and XP data. This action cannot be undone.
+                  </Typography>
+                </Box>
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  size="small"
+                  startIcon={<RestartAltIcon sx={{ fontSize: 16 }} />}
+                  onClick={() => setOpenDataResetDialog(true)}
+                  sx={{ 
+                    borderRadius: 2, 
+                    px: 2, 
+                    py: 0.75, 
+                    fontWeight: 800, 
+                    fontSize: '0.75rem',
+                    borderWidth: 1,
+                    '&:hover': { borderWidth: 1, bgcolor: alpha(theme.palette.warning.main, 0.05) } 
+                  }}
+                >
+                  Reset Data
+                </Button>
               </Box>
             </Paper>
           </Grid>

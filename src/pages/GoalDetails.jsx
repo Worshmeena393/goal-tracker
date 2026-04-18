@@ -349,7 +349,19 @@ function GoalDetails() {
                             variant="outlined"
                             startIcon={goal.status === "active" ? <PauseIcon /> : <PlayIcon />}
                             onClick={() => toggleGoalStatus(goal.id)}
-                            sx={{ borderRadius: 3, fontWeight: 800, borderColor: 'divider', color: 'text.primary' }}
+                            sx={{ 
+                              borderRadius: 3, 
+                              fontWeight: 800, 
+                              height: 48,
+                              borderColor: goal.status === "active" ? alpha(theme.palette.warning.main, 0.3) : alpha(theme.palette.success.main, 0.3),
+                              color: goal.status === "active" ? 'warning.main' : 'success.main',
+                              bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.05),
+                              '&:hover': {
+                                bgcolor: alpha(goal.status === "active" ? theme.palette.warning.main : theme.palette.success.main, 0.1),
+                                borderColor: goal.status === "active" ? 'warning.main' : 'success.main',
+                                transform: 'translateY(-2px)'
+                              }
+                            }}
                           >
                             {goal.status === "active" ? t("pause") : (goal.status === "completed" ? t("restore") : t("resume"))}
                           </Button>
@@ -357,7 +369,7 @@ function GoalDetails() {
                           {goal.status === 'active' && (
                             <Button
                               fullWidth
-                              variant="soft"
+                              variant="contained"
                               color="success"
                               startIcon={<CheckIcon />}
                               onClick={() => {
@@ -368,9 +380,13 @@ function GoalDetails() {
                               sx={{ 
                                 borderRadius: 3, 
                                 fontWeight: 800, 
-                                bgcolor: alpha(theme.palette.success.main, 0.1),
-                                color: 'success.main',
-                                '&:hover': { bgcolor: alpha(theme.palette.success.main, 0.2) }
+                                height: 48,
+                                boxShadow: `0 8px 16px ${alpha(theme.palette.success.main, 0.25)}`,
+                                '&:hover': { 
+                                  bgcolor: 'success.dark',
+                                  transform: 'translateY(-2px)',
+                                  boxShadow: `0 12px 20px ${alpha(theme.palette.success.main, 0.35)}`,
+                                }
                               }}
                             >
                               {t("markAsComplete")}

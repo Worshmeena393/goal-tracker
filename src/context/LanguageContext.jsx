@@ -159,7 +159,7 @@ const translations = {
     notificationUpdated: "Goal updated successfully!",
     notificationDeleted: "Goal deleted successfully!",
     updateYourProgress: "Update your journey details",
-    footerDesc: "Your personal dashboard for tracking habits, achieving goals, and gamifying your productivity journey.",
+    footerDesc: "Track your goals, build habits, and achieve your dreams with our gamified productivity platform.",
     quickLinks: "Quick Links",
     support: "Support",
     help: "Help Center",
