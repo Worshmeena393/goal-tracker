@@ -42,6 +42,7 @@ import {
   ArrowForward as ArrowIcon,
   Edit as EditIcon,
   Add as AddIcon,
+  Download as DownloadIcon,
 } from "@mui/icons-material";
 
 const containerVariants = {
@@ -239,7 +240,7 @@ function Categories() {
                 <Box sx={{ position: 'absolute', top: 0, right: 0, width: '30%', height: '100%', background: `linear-gradient(90deg, transparent, ${alpha(theme.palette.primary.main, 0.03)})`, pointerEvents: 'none' }} />
 
                 <Grid container spacing={2} alignItems="stretch">
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={3}>
                     <Paper sx={{ p: 2.5, borderRadius: 4, bgcolor: alpha(theme.palette.primary.main, 0.08), border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 140, height: '100%' }}>
                       <Box>
                         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.8, display: 'block', mb: 1 }}>
@@ -257,7 +258,7 @@ function Categories() {
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={3}>
                     <Paper sx={{ p: 2.5, borderRadius: 4, bgcolor: alpha(theme.palette.secondary.main, 0.08), border: `1px solid ${alpha(theme.palette.secondary.main, 0.14)}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 140, height: '100%' }}>
                       <Box>
                         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.8, display: 'block', mb: 1 }}>
@@ -279,20 +280,40 @@ function Categories() {
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={3}>
                     <Paper sx={{ p: 2.5, borderRadius: 4, bgcolor: alpha(theme.palette.success.main, 0.08), border: `1px solid ${alpha(theme.palette.success.main, 0.12)}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 140, height: '100%' }}>
                       <Box>
                         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.8, display: 'block', mb: 1 }}>
-                          Experience Points
+                          Level
                         </Typography>
                         <Typography variant="h4" sx={{ fontWeight: 900, color: 'success.main', lineHeight: 1.05 }}>
-                          200
+                          3200
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 700, opacity: 0.8, mt: 0.25 }}>
+                          Experience Points
                         </Typography>
                         <LinearProgress
                           variant="determinate"
                           value={100}
                           sx={{ height: 8, borderRadius: 4, mt: 1, bgcolor: alpha(theme.palette.success.main, 0.14), '& .MuiLinearProgress-bar': { borderRadius: 4, backgroundColor: theme.palette.success.main } }}
                         />
+                      </Box>
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    <Paper sx={{ p: 2.5, borderRadius: 4, bgcolor: alpha(theme.palette.info.main, 0.08), border: `1px solid ${alpha(theme.palette.info.main, 0.12)}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 140, height: '100%', cursor: 'pointer' }} onClick={() => navigate('/goals/new')}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.8, display: 'block', mb: 1 }}>
+                          {t("createNewGoal") || "Create New Goal"}
+                        </Typography>
+                        <Button
+                          variant="contained"
+                          startIcon={<AddIcon />}
+                          sx={{ mt: 1, borderRadius: 3, textTransform: 'none', fontWeight: 700 }}
+                        >
+                          {t("newGoal") || "New Goal"}
+                        </Button>
                       </Box>
                     </Paper>
                   </Grid>

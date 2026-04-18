@@ -10,6 +10,7 @@ import {
   useTheme,
   alpha,
   Tooltip,
+  Button,
 } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
@@ -178,116 +179,106 @@ const GoalCard = ({
               width: '100%',
             }}
           >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-              <Tooltip title={t("logProgress")}>
-                <IconButton
-                  size="small"
-                  aria-label={t("logProgress")}
-                  onClick={() => onLog(goal.id)}
-                  disabled={goal.status !== "active"}
-                  sx={{
-                    width: 48,
-                    height: 48,
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
-                    color: "primary.main",
-                    borderRadius: 2,
-                    "&:hover": {
-                      bgcolor: "primary.main",
-                      color: "white",
-                      transform: "scale(1.08)",
-                    },
-                  }}
-                >
-                  <CheckCircleIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
-                {t("logProgress")}
-              </Typography>
-            </Box>
+            <Button
+              fullWidth
+              size="small"
+              startIcon={<CheckCircleIcon fontSize="small" />}
+              disabled={goal.status !== "active"}
+              onClick={() => onLog(goal.id)}
+              sx={{
+                justifyContent: "flex-start",
+                minWidth: 0,
+                height: 48,
+                textTransform: "none",
+                color: theme.palette.primary.main,
+                borderColor: alpha(theme.palette.primary.main, 0.3),
+                borderRadius: 2,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                px: 1,
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.primary.main, 0.08),
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
+            >
+              {t("logProgress")}
+            </Button>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-              <Tooltip title={goal.status === "active" ? t("pause") : t("resume")}>
-                <IconButton
-                  size="small"
-                  aria-label={goal.status === "active" ? t("pause") : t("resume")}
-                  onClick={() => onToggleStatus(goal.id)}
-                  sx={{
-                    width: 48,
-                    height: 48,
-                    bgcolor: alpha(theme.palette.grey[500], 0.1),
-                    borderRadius: 2,
-                    "&:hover": {
-                      bgcolor: alpha(theme.palette.grey[500], 0.2),
-                      transform: "scale(1.08)",
-                    },
-                  }}
-                >
-                  {goal.status === "active" ? (
-                    <PauseIcon fontSize="small" />
-                  ) : (
-                    <PlayIcon fontSize="small" />
-                  )}
-                </IconButton>
-              </Tooltip>
-              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
-                {goal.status === "active" ? t("pause") : t("resume")}
-              </Typography>
-            </Box>
+            <Button
+              fullWidth
+              size="small"
+              startIcon={goal.status === "active" ? <PauseIcon fontSize="small" /> : <PlayIcon fontSize="small" />}
+              onClick={() => onToggleStatus(goal.id)}
+              sx={{
+                justifyContent: "flex-start",
+                minWidth: 0,
+                height: 48,
+                textTransform: "none",
+                color: theme.palette.text.primary,
+                borderColor: alpha(theme.palette.grey[500], 0.3),
+                borderRadius: 2,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                px: 1,
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.grey[500], 0.12),
+                  borderColor: alpha(theme.palette.grey[500], 0.5),
+                },
+              }}
+            >
+              {goal.status === "active" ? t("pause") : t("resume")}
+            </Button>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-              <Tooltip title={t("edit")}>
-                <IconButton
-                  size="small"
-                  aria-label={t("edit")}
-                  onClick={() => navigate(`/goals/edit/${goal.id}`)}
-                  sx={{
-                    width: 48,
-                    height: 48,
-                    bgcolor: alpha(theme.palette.info.main, 0.1),
-                    color: "info.main",
-                    borderRadius: 2,
-                    "&:hover": {
-                      bgcolor: "info.main",
-                      color: "white",
-                      transform: "scale(1.08)",
-                    },
-                  }}
-                >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
-                {t("edit")}
-              </Typography>
-            </Box>
+            <Button
+              fullWidth
+              size="small"
+              startIcon={<EditIcon fontSize="small" />}
+              onClick={() => navigate(`/goals/edit/${goal.id}`)}
+              sx={{
+                justifyContent: "flex-start",
+                minWidth: 0,
+                height: 48,
+                textTransform: "none",
+                color: theme.palette.info.main,
+                borderColor: alpha(theme.palette.info.main, 0.3),
+                borderRadius: 2,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                px: 1,
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.info.main, 0.08),
+                  borderColor: theme.palette.info.main,
+                },
+              }}
+            >
+              {t("edit")}
+            </Button>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-              <Tooltip title={t("delete")}>
-                <IconButton
-                  size="small"
-                  aria-label={t("delete")}
-                  onClick={() => onDelete(goal.id)}
-                  sx={{
-                    width: 48,
-                    height: 48,
-                    bgcolor: alpha(theme.palette.error.main, 0.1),
-                    color: "error.main",
-                    borderRadius: 2,
-                    "&:hover": {
-                      bgcolor: "error.main",
-                      color: "white",
-                      transform: "scale(1.08)",
-                    },
-                  }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 700, textAlign: 'center', color: 'text.secondary' }}>
-                {t("delete")}
-              </Typography>
-            </Box>
+            <Button
+              fullWidth
+              size="small"
+              startIcon={<DeleteIcon fontSize="small" />}
+              onClick={() => onDelete(goal.id)}
+              sx={{
+                justifyContent: "flex-start",
+                minWidth: 0,
+                height: 48,
+                textTransform: "none",
+                color: theme.palette.error.main,
+                borderColor: alpha(theme.palette.error.main, 0.3),
+                borderRadius: 2,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                px: 1,
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.error.main, 0.08),
+                  borderColor: theme.palette.error.main,
+                },
+              }}
+            >
+              {t("delete")}
+            </Button>
           </Box>
         </CardContent>
       </Card>
