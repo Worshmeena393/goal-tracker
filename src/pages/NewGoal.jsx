@@ -65,7 +65,9 @@ function NewGoal() {
     title: "",
     category: "Personal",
     type: "count",
+    timeUnit: "minutes",
     target: 10,
+    progress: 0,
     notes: "",
     startDate: new Date().toISOString().split("T")[0],
     endDate: "",
@@ -96,6 +98,7 @@ function NewGoal() {
           category: goal.category || "Personal",
           type: goal.type || "count",
           target: goal.target || 10,
+          progress: goal.progress || 0,
           notes: goal.notes || "",
           startDate: goal.startDate || new Date().toISOString().split("T")[0],
           endDate: goal.endDate || "",
@@ -202,6 +205,7 @@ function NewGoal() {
       ...formData,
       title: formData.title.trim(),
       target: Number(formData.target),
+      progress: Number(formData.progress || 0),
       notes: (formData.notes || "").trim(),
     };
 
@@ -434,24 +438,86 @@ function NewGoal() {
                 </Box>
               </Grid>
 
+              <Grid item xs={12}>
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'text.secondary', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <GoalIcon sx={{ fontSize: 18, color: 'primary.main' }} /> {t("targetAndProgress")?.toUpperCase() || "TARGET & INITIAL PROGRESS"}
+                  </Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        required
+                        type="number"
+                        label={`${t("target")} (${formData.type === 'daily' ? t('unit_daily') || 'days' : formData.type === 'time' ? t(formData.timeUnit) || formData.timeUnit : t('unit_count') || 'units'})`}
+                        name="target"
+                        value={formData.target}
+                        onChange={handleChange}
+                        error={!!errors.target}
+                        helperText={errors.target}
+                        variant="filled"
+                        InputProps={{ 
+                          disableUnderline: true, 
+                          sx: { borderRadius: 3, fontWeight: 700, p: 1 },
+                          startAdornment: <EditIcon sx={{ mr: 1, color: 'primary.main', opacity: 0.7 }} />
+                        }}
+                        InputLabelProps={{ sx: { fontWeight: 800, px: 1 } }}
+                      />
+                    </Grid>
+                    {formData.type === 'time' && (
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth variant="filled">
+                          <InputLabel sx={{ fontWeight: 800, px: 1 }}>{t("unit") || "Unit"}</InputLabel>
+                          <Select
+                            name="timeUnit"
+                            value={formData.timeUnit}
+                            onChange={handleChange}
+                            disableUnderline
+                            sx={{ borderRadius: 3, fontWeight: 700 }}
+                          >
+                            <MenuItem value="seconds">{t("seconds") || "Seconds"}</MenuItem>
+                            <MenuItem value="minutes">{t("minutes") || "Minutes"}</MenuItem>
+                            <MenuItem value="hours">{t("hours") || "Hours"}</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    )}
+                    <Grid item xs={12} sm={formData.type === 'time' ? 12 : 6}>
+                      <TextField
+                        fullWidth
+                        type="number"
+                        label={`${t("initialProgress") || "Initial Progress"} (${formData.type === 'daily' ? t('unit_daily') || 'days' : formData.type === 'time' ? t(formData.timeUnit) || formData.timeUnit : t('unit_count') || 'units'})`}
+                        name="progress"
+                        value={formData.progress}
+                        onChange={handleChange}
+                        variant="filled"
+                        InputProps={{ 
+                          disableUnderline: true, 
+                          sx: { borderRadius: 3, fontWeight: 700, p: 1 },
+                          startAdornment: <TimelineIcon sx={{ mr: 1, color: 'primary.main', opacity: 0.7 }} />
+                        }}
+                        InputLabelProps={{ sx: { fontWeight: 800, px: 1 } }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
-                  type="number"
-                  label={t("target")}
-                  name="target"
-                  value={formData.target}
+                  type="date"
+                  label={t("startDate") || "Start Date"}
+                  name="startDate"
+                  value={formData.startDate}
                   onChange={handleChange}
-                  error={!!errors.target}
-                  helperText={errors.target}
                   variant="filled"
                   InputProps={{ 
                     disableUnderline: true, 
                     sx: { borderRadius: 3, fontWeight: 700, p: 1 },
-                    startAdornment: <EditIcon sx={{ mr: 1, color: 'primary.main', opacity: 0.7 }} />
+                    startAdornment: <CalendarIcon sx={{ mr: 1, color: 'primary.main', opacity: 0.7 }} />
                   }}
-                  InputLabelProps={{ sx: { fontWeight: 800, px: 1 } }}
+                  InputLabelProps={{ shrink: true, sx: { fontWeight: 800, px: 1 } }}
                 />
               </Grid>
 

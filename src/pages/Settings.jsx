@@ -72,10 +72,9 @@ function Settings() {
   };
 
   const handleDataReset = () => {
-    // Clear goals and user stats from localStorage
     localStorage.removeItem("goals");
     localStorage.removeItem("userStats");
-    // Reload the page to reset the context
+    // Reload to apply sample goals from GoalsContext
     window.location.reload();
   };
 

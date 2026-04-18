@@ -291,7 +291,7 @@ function StatCard({ title, value, color, icon }) {
 /* ========================= */
 
 function Dashboard() {
-  const { goals, userStats, completionRate, deleteGoal, toggleGoalStatus, logProgress, exportGoals, loading } = useContext(GoalsContext);
+  const { goals, userStats, completionRate, totalHours, deleteGoal, toggleGoalStatus, logProgress, exportGoals, loading } = useContext(GoalsContext);
   const { t } = useContext(LanguageContext);
   const { showNotification } = useNotification();
   const navigate = useNavigate();
@@ -518,23 +518,26 @@ function Dashboard() {
         {/* Quick Stats */}
         <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} sx={{ mb: { xs: 4, sm: 6, md: 8 } }}>
           {loading ? (
-            [1, 2, 3, 4].map((i) => (
-              <Grid item xs={12} sm={6} md={3} key={`skeleton-stat-${i}`}>
+            [1, 2, 3, 4, 5].map((i) => (
+              <Grid item xs={12} sm={6} md={4} lg={2.4} key={`skeleton-stat-${i}`}>
                 <SkeletonStatCard />
               </Grid>
             ))
           ) : (
             <>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4} lg={2.4}>
                 <StatCard title={t("totalGoals")} value={totalGoals} color={theme.palette.primary.main} icon={TrendingUpIcon} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4} lg={2.4}>
+                <StatCard title={t("totalHours")} value={totalHours.toFixed(1)} color={theme.palette.info.main} icon={CalendarIcon} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2.4}>
                 <StatCard title={t("active")} value={activeCount} color={theme.palette.secondary.main} icon={PlayIcon} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4} lg={2.4}>
                 <StatCard title={t("completed")} value={completedCount} color={theme.palette.success.main} icon={CheckCircleIcon} />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4} lg={2.4}>
                 <StatCard title={t("paused")} value={pausedCount} color={theme.palette.warning?.main || "#f59e0b"} icon={PauseIcon} />
               </Grid>
             </>

@@ -146,7 +146,6 @@ function Goals() {
 
   const handleLogProgress = (id) => {
     logProgress(id, 1);
-    showNotification(t("progressLogged") || "Progress logged! +20 XP", "success");
   };
 
   const handleToggleStatus = (id) => {

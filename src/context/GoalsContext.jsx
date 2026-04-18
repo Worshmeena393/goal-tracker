@@ -1,6 +1,8 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import confetti from "canvas-confetti";
 import { useNotification } from "./NotificationContext";
+import { LanguageContext } from "./LanguageContext";
+import { sampleGoals } from "../data/sampleGoals";
 
 export const GoalsContext = createContext();
 
@@ -16,13 +18,61 @@ const generateId = () => {
 };
 
 const normalizeGoal = (goal) => {
-  const logs = Array.isArray(goal.logs)
-    ? goal.logs.map((log) => ({
-        ...log,
-        amount: Number(log.amount || 0),
-        date: log.date || new Date().toLocaleDateString("en-CA"),
-      }))
-    : [];
+  let logs = Array.isArray(goal.logs) ? [...goal.logs] : [];
+  
+  // If we have a progress value but no logs, or if progress doesn't match logs
+  // we add corrective logs for the difference
+  const currentLogsProgress = logs.reduce((sum, log) => sum + (Number(log.amount) || 0), 0);
+  const targetProgress = Number(goal.progress || 0);
+
+  if (targetProgress > currentLogsProgress) {
+    const diff = targetProgress - currentLogsProgress;
+    
+    // For Daily goals, spread initial progress over consecutive days to build a streak
+    if (goal.type === "daily" && diff > 0) {
+      const existingDates = new Set(logs.map(l => l.date));
+      let added = 0;
+      let dayOffset = 0;
+      
+      while (added < diff) {
+        const d = new Date();
+        d.setDate(d.getDate() - dayOffset);
+        const dateStr = d.toLocaleDateString("en-CA");
+        
+        if (!existingDates.has(dateStr)) {
+          logs.push({
+            date: dateStr,
+            amount: 1,
+            isInitial: true
+          });
+          added++;
+        }
+        dayOffset++;
+        // Safety break to prevent infinite loop
+        if (dayOffset > 365) break;
+      }
+    } else {
+      // For other types, just add one corrective log
+      logs.push({
+        date: new Date().toLocaleDateString("en-CA"),
+        amount: diff,
+        isInitial: true
+      });
+    }
+  } else if (targetProgress < currentLogsProgress && targetProgress >= 0) {
+    // If progress was manually reduced, add a negative corrective log
+    logs.push({
+      date: new Date().toLocaleDateString("en-CA"),
+      amount: targetProgress - currentLogsProgress,
+      isInitial: true
+    });
+  }
+
+  logs = logs.map((log) => ({
+    ...log,
+    amount: Number(log.amount || 0),
+    date: log.date || new Date().toLocaleDateString("en-CA"),
+  }));
 
   const progress = logs.reduce((sum, log) => sum + (log.amount || 0), 0);
   const target = Math.max(1, Number(goal.target || 1));
@@ -48,6 +98,19 @@ const calculateCompletionRate = (goals = []) => {
   if (goals.length === 0) return 0;
   const completed = goals.filter((g) => g.status === "completed").length;
   return Math.round((completed / goals.length) * 100);
+};
+
+const calculateTotalHours = (goals = []) => {
+  return goals.reduce((total, goal) => {
+    if (goal.type !== "time") return total;
+    const progress = Number(goal.progress || 0);
+    const unit = goal.timeUnit || "minutes";
+    let hours = 0;
+    if (unit === "seconds") hours = progress / 3600;
+    else if (unit === "minutes") hours = progress / 60;
+    else if (unit === "hours") hours = progress;
+    return total + hours;
+  }, 0);
 };
 
 const calculateStreak = (allGoals = []) => {
@@ -80,6 +143,7 @@ const calculateStreak = (allGoals = []) => {
 
 export const GoalsProvider = ({ children }) => {
   const { showNotification } = useNotification();
+  const { t } = useContext(LanguageContext);
   const [loading, setLoading] = useState(true);
 
   const [goals, setGoals] = useState([]);
@@ -96,8 +160,14 @@ export const GoalsProvider = ({ children }) => {
     // Simulated loading delay to satisfy UI requirements
     const timer = setTimeout(() => {
       try {
-        const storedGoals = JSON.parse(localStorage.getItem("goals")) || [];
-        setGoals(Array.isArray(storedGoals) ? storedGoals.map(normalizeGoal) : []);
+        const storedGoals = JSON.parse(localStorage.getItem("goals"));
+        
+        // If no stored goals, use our new sample goals
+        if (!storedGoals || (Array.isArray(storedGoals) && storedGoals.length === 0)) {
+          setGoals(sampleGoals.map(normalizeGoal));
+        } else {
+          setGoals(Array.isArray(storedGoals) ? storedGoals.map(normalizeGoal) : []);
+        }
 
         const stats = JSON.parse(localStorage.getItem("userStats")) || {
           xpTotal: 0,
@@ -165,9 +235,7 @@ export const GoalsProvider = ({ children }) => {
     const newGoal = normalizeGoal({
       ...goal,
       id: generateId(),
-      progress: 0,
-      status: "active",
-      logs: [],
+      status: goal.status || "active",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
@@ -231,19 +299,22 @@ export const GoalsProvider = ({ children }) => {
     
     let isGoalCompleted = false;
     let goalTitle = "";
+    let logAdded = false;
 
     setGoals((prevGoals) => {
       const updatedGoals = prevGoals.map((goal) => {
         if (goal.id !== id || goal.status !== "active") return goal;
         
+        // Removed strict daily limit to allow multiple logs if needed
+        // but still tracking logs with dates for stats
         const logs = goal.logs || [];
-        if (goal.type === "daily" && logs.some(l => l.date === today)) return goal;
-
+        
         const currentProgress = goal.progress || 0;
         const newProgress = Math.min(currentProgress + numAmount, goal.target);
         const newLogs = [...logs, { date: today, amount: numAmount }];
         const isCompleted = newProgress >= goal.target;
 
+        logAdded = true;
         if (isCompleted) {
           isGoalCompleted = true;
           goalTitle = goal.title;
@@ -258,16 +329,16 @@ export const GoalsProvider = ({ children }) => {
         };
       });
 
-      // We handle the side effects here but safely outside the render cycle
-      // React's state updater should be pure, so we schedule side effects.
+      // Handle side effects safely outside the render cycle
       if (isGoalCompleted) {
         setTimeout(() => {
           triggerConfetti();
-          showNotification(`Goal "${goalTitle}" Completed! 🎉`, "success");
+          showNotification(`${t("goal")} "${goalTitle}" ${t("completed")}! 🎉`, "success");
         }, 0);
-      } else if (updatedGoals.some(g => g.id === id && g.logs.some(l => l.date === today && l.amount === numAmount))) {
-        // Only give XP if progress was actually logged
+      } else if (logAdded) {
+        // Only give XP and show notification if progress was actually logged
         setTimeout(() => {
+          showNotification(t("progressLogged") || `Progress logged! +20 XP`, "success");
           setUserStats(prev => {
             const newXp = prev.xpTotal + 20;
             return {
@@ -315,6 +386,7 @@ export const GoalsProvider = ({ children }) => {
         userStats,
         loading,
         completionRate: calculateCompletionRate(goals),
+        totalHours: calculateTotalHours(goals),
         addGoal,
         updateGoal,
         deleteGoal,

@@ -64,17 +64,107 @@ const generateLogs = (progress) => {
 };
 
 /* -------------------------------------------------------------------------- */
-/* Main Dataset (~50+ goals)                                                  */
+/* Main Dataset (~6 goals)                                                    */
 /* -------------------------------------------------------------------------- */
 
-export const sampleGoals = [
-  createGoal({ title: "Workout", category: "Health" }),
-  createGoal({ title: "Read Book", category: "Study" }),
-  createGoal({ title: "Meditation", category: "Mindfulness" }),
-  createGoal({ title: "Budget Tracking", category: "Finance" }),
+const generateDatedLogs = (count, startDate = new Date()) => {
+  const logs = [];
+  for (let i = 0; i < count; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() - i);
+    logs.push({
+      date: d.toLocaleDateString("en-CA"),
+      amount: 1,
+    });
+  }
+  return logs.reverse();
+};
 
-  // Auto-generate more
-  ...Array.from({ length: 50 }, () => createGoal()),
+export const sampleGoals = [
+  {
+    id: "1",
+    title: "Morning Workout",
+    category: "Health",
+    type: "daily",
+    target: 30,
+    progress: 12,
+    status: "active",
+    logs: generateDatedLogs(12),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    startDate: new Date().toLocaleDateString("en-CA"),
+    notes: "Daily morning exercise routine",
+  },
+  {
+    id: "2",
+    title: "Study React",
+    category: "Study",
+    type: "time",
+    target: 600,
+    progress: 250,
+    status: "active",
+    logs: [{ date: new Date().toLocaleDateString("en-CA"), amount: 250 }],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    startDate: new Date().toLocaleDateString("en-CA"),
+    notes: "Mastering React and modern UI development",
+  },
+  {
+    id: "3",
+    title: "Read Books",
+    category: "Personal",
+    type: "count",
+    target: 5,
+    progress: 2,
+    status: "active",
+    logs: generateDatedLogs(2),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    startDate: new Date().toLocaleDateString("en-CA"),
+    notes: "Read at least 5 books this month",
+  },
+  {
+    id: "4",
+    title: "Build Portfolio Website",
+    category: "Work",
+    type: "count",
+    target: 1,
+    progress: 1,
+    status: "completed",
+    logs: [{ date: new Date().toLocaleDateString("en-CA"), amount: 1 }],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    startDate: new Date().toLocaleDateString("en-CA"),
+    notes: "Personal professional portfolio project",
+  },
+  {
+    id: "5",
+    title: "Learn Python",
+    category: "Study",
+    type: "time",
+    target: 300,
+    progress: 100,
+    status: "paused",
+    logs: [{ date: new Date().toLocaleDateString("en-CA"), amount: 100 }],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    startDate: new Date().toLocaleDateString("en-CA"),
+    notes: "Basic Python for data science",
+  },
+  {
+    id: "6",
+    title: "Drink Water",
+    category: "Health",
+    type: "daily",
+    target: 30,
+    progress: 5,
+    status: "active",
+    logs: generateDatedLogs(5),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    startDate: new Date().toLocaleDateString("en-CA"),
+    notes: "Stay hydrated throughout the day",
+  },
 ];
 
 /* -------------------------------------------------------------------------- */

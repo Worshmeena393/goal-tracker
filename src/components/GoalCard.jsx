@@ -227,7 +227,7 @@ const GoalCard = ({
                 }}
               >
                 <Box component="span" sx={{ color: 'primary.main', fontWeight: 900 }}>{goal.progress}</Box>
-                / {goal.target} {t(`unit_${goal.type}`) || t("units")}
+                / {goal.target} {goal.type === 'time' && goal.timeUnit ? (t(goal.timeUnit) || goal.timeUnit) : (t(`unit_${goal.type}`) || t("units"))}
               </Typography>
               {goal.endDate && (
                 <Typography variant="caption" sx={{ fontWeight: 700, fontSize: '0.65rem', color: 'text.disabled' }}>

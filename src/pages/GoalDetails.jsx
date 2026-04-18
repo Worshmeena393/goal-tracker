@@ -96,6 +96,7 @@ function GoalDetails() {
   const [editData, setEditData] = useState({
     title: "",
     category: "Personal",
+    timeUnit: "minutes",
     target: 1,
   });
   const [logAmount, setLogAmount] = useState(1);
@@ -107,6 +108,7 @@ function GoalDetails() {
         setEditData({
           title: goal.title || "",
           category: goal.category || "Personal",
+          timeUnit: goal.timeUnit || "minutes",
           target: goal.target || 1,
         });
       }, 0);
@@ -144,6 +146,7 @@ function GoalDetails() {
       ...goal,
       title: editData.title,
       category: editData.category,
+      timeUnit: editData.timeUnit,
       target: Number(editData.target),
     });
     setIsEditDialogOpen(false);
@@ -301,7 +304,7 @@ function GoalDetails() {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <GoalIcon sx={{ color: 'text.disabled', fontSize: 18 }} />
                           <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.secondary' }}>
-                            {goal.progress} / {goal.target} {t(`unit_${goal.type}`) || t("units")}
+                            {goal.progress} / {goal.target} {goal.type === 'time' && goal.timeUnit ? (t(goal.timeUnit) || goal.timeUnit) : (t(`unit_${goal.type}`) || t("units"))}
                           </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -499,7 +502,7 @@ function GoalDetails() {
                         <ListItemText 
                           primary={
                             <Typography sx={{ fontWeight: 900, color: 'text.primary', fontSize: '0.95rem' }}>
-                              +{log.amount} {t(`unit_${goal.type}`) || t("units")}
+                              +{log.amount} {goal.type === 'time' && goal.timeUnit ? (t(goal.timeUnit) || goal.timeUnit) : (t(`unit_${goal.type}`) || t("units"))}
                             </Typography>
                           }
                           secondary={
@@ -583,6 +586,22 @@ function GoalDetails() {
               fullWidth
               sx={{ "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
             />
+
+            {goal.type === 'time' && (
+              <FormControl fullWidth variant="filled" sx={{ '& .MuiFilledInput-root': { borderRadius: 3, p: 1 } }}>
+                <InputLabel sx={{ fontWeight: 800, px: 1 }}>{t("unit") || "Unit"}</InputLabel>
+                <Select
+                  name="timeUnit"
+                  value={editData.timeUnit}
+                  onChange={handleEditChange}
+                  disableUnderline
+                >
+                  <MenuItem value="seconds">{t("seconds") || "Seconds"}</MenuItem>
+                  <MenuItem value="minutes">{t("minutes") || "Minutes"}</MenuItem>
+                  <MenuItem value="hours">{t("hours") || "Hours"}</MenuItem>
+                </Select>
+              </FormControl>
+            )}
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 1 }}>
