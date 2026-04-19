@@ -441,7 +441,7 @@ function NewGoal() {
               <Grid item xs={12}>
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 800, color: 'text.secondary', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <GoalIcon sx={{ fontSize: 18, color: 'primary.main' }} /> {t("targetAndProgress")?.toUpperCase() || "TARGET & INITIAL PROGRESS"}
+                    <GoalIcon sx={{ fontSize: 18, color: 'primary.main' }} /> {t("TARGETANDPROGRESS")?.toUpperCase() || "TARGET & INITIAL PROGRESS"}
                   </Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>

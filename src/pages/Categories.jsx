@@ -101,7 +101,7 @@ function Categories() {
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
-    showNotification("Goals exported successfully!", "success");
+    showNotification(t("goalsExported") || "Goals exported successfully!", "success");
   };
 
   const lastUpdatedForCategory = (categoryName) => {
@@ -199,7 +199,7 @@ function Categories() {
               onClick={handleExport}
               sx={{ mt: 1, borderRadius: 3, textTransform: 'none', fontWeight: 700 }}
             >
-              Export Goals
+              {t("exportGoals") || t("export")}
             </Button>
           </Box>
         </Box>
@@ -281,13 +281,13 @@ function Categories() {
                     <Paper sx={{ p: 2.5, borderRadius: 4, bgcolor: alpha(theme.palette.success.main, 0.08), border: `1px solid ${alpha(theme.palette.success.main, 0.12)}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 140, height: '100%' }}>
                       <Box>
                         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.8, display: 'block', mb: 1 }}>
-                          Level
+                          {t("level")}
                         </Typography>
                         <Typography variant="h4" sx={{ fontWeight: 900, color: 'success.main', lineHeight: 1.05 }}>
                           3200
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 700, opacity: 0.8, mt: 0.25 }}>
-                          Experience Points
+                          {t("xp")}
                         </Typography>
                         <LinearProgress
                           variant="determinate"

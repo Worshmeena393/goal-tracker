@@ -13,8 +13,13 @@ export const LanguageContext = createContext();
 const translations = {
   en: {
     dashboard: "Dashboard",
+    log: "Log",
     goals: "Goals",
     newGoal: "New Goal",
+    createNewGoal: "Create New Goal",
+    TARGETANDPROGRESS: "Target & Progress",
+    mmddY: "MM/DD/YYYY",
+    initialProgress: "Initial Progress",
     categories: "Categories",
     settings: "Settings",
     xp: "Experience Points",
@@ -185,12 +190,19 @@ const translations = {
     clearDataDesc: "Wipe all goals, streaks, and progress data.",
     confirmDataReset: "Clear All Data?",
     confirmDataResetDesc: "This will permanently delete all your tracking history. This action cannot be undone.",
+    exportGoals: "Export Goals",
+    goalsExported: "Goals exported successfully!",
   },
 
   fa: {
     dashboard: "داشبورد",
+    log: "ثبت",
     goals: "اهداف",
     newGoal: "هدف جدید",
+    createNewGoal: "ایجاد هدف جدید",
+    TARGETANDPROGRESS: "هدف و پیشرفت",
+    mmddY: "روز/ماه/سال",
+    initialProgress: "پیشرفت اولیه",
     categories: "دسته‌بندی‌ها",
     settings: "تنظیمات",
     xp: "امتیاز",
@@ -361,6 +373,8 @@ const translations = {
     clearDataDesc: "تمامی اهداف، رکوردها و داده‌های پیشرفت شما را پاک می‌کند.",
     confirmDataReset: "پاکسازی تمامی داده‌ها؟",
     confirmDataResetDesc: "این عمل تمامی تاریخچه ردیابی شما را برای همیشه حذف می‌کند و قابل بازگشت نیست.",
+    exportGoals: "Export Goals",
+    goalsExported: "اهداف با موفقیت خروجی گرفته شد!",
   },
 };
 

@@ -275,7 +275,7 @@ const GoalCard = ({
                 },
               }}
             >
-              {t("log") || "Log"}
+              {t("log")}
             </Button>
 
             <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>

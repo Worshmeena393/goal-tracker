@@ -410,9 +410,9 @@ function Dashboard() {
                       bgcolor: 'rgba(255,255,255,0.95)',
                     }
                   }}
-                  aria-label={t("createNewGoal")}
+                  aria-label={t("createGoal")}
                 >
-                  {t("createNewGoal")}
+                  {t("createGoal")}
                 </Button>
                 <Button
                   component={motion.button}
