@@ -26,38 +26,8 @@ function ProgressBar({
   animated = true,
   labelPosition = "below",
 }) {
-  const [displayValue, setDisplayValue] = useState(clamp(value));
-  const rafRef = useRef(null);
-
-  /* --------------------------- Animate value ------------------------------ */
-
-  useEffect(() => {
-    const target = clamp(value);
-
-    if (!animated) {
-      setTimeout(() => setDisplayValue(target), 0);
-      return;
-    }
-
-    const animate = () => {
-      setDisplayValue((prev) => {
-        if (prev === target) return prev;
-
-        const diff = target - prev;
-        const step = diff * 0.1; // smooth easing
-        const next =
-          Math.abs(diff) < 0.5 ? target : prev + step;
-
-        return clamp(next);
-      });
-
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [value, animated]);
+  // Progress updates instantly, no animation
+  const displayValue = clamp(value);
 
   /* ----------------------------- Styles ---------------------------------- */
 
@@ -69,7 +39,7 @@ function ProgressBar({
     height,
     background: color || getGradient(displayValue),
     borderRadius: "inherit",
-    transition: animated ? "width 0.3s ease" : "none",
+    transition: "none",
   };
 
   /* -------------------------------------------------------------------------- */

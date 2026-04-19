@@ -201,87 +201,74 @@ function StatCard({ title, value, color, icon }) {
           p: { xs: 2, sm: 2.5, md: 3 },
           height: "100%",
           borderRadius: { xs: 2.5, sm: 3, md: 4 },
-          background: isDark 
+          background: isDark
             ? `linear-gradient(135deg, ${alpha(color, 0.18)} 0%, ${alpha(color, 0.06)} 100%)`
             : `linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.85)} 100%)`,
           color: isDark ? theme.palette.text.primary : "white",
           display: "flex",
-          flexDirection: { xs: 'row', sm: 'column', md: 'row' },
-          alignItems: { xs: 'center', sm: 'flex-start', md: 'center' },
-          gap: { xs: 2, sm: 1.5, md: 2.5 },
-          boxShadow: isDark 
-            ? `0 10px 25px -5px rgba(0,0,0,0.4)` 
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1.5,
+          boxShadow: isDark
+            ? `0 10px 25px -5px rgba(0,0,0,0.4)`
             : `0 10px 25px -5px ${alpha(color, 0.3)}`,
           border: isDark ? `1px solid ${alpha(color, 0.2)}` : 'none',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           position: 'relative',
           overflow: 'hidden',
-          '&:hover': {
-            transform: 'translateY(-6px)',
-            boxShadow: isDark 
-              ? `0 15px 35px -5px rgba(0,0,0,0.5)` 
-              : `0 15px 35px -5px ${alpha(color, 0.45)}`,
-            '& .stat-icon-bg': {
-              transform: 'scale(1.1) rotate(10deg)',
-              opacity: 0.2
-            }
-          }
+          textAlign: 'center',
+          minHeight: 120,
         }}
       >
         {/* Background Decorative Icon */}
-        <IconComponent className="stat-icon-bg" sx={{ 
-          position: 'absolute', 
-          right: -10, 
-          bottom: -10, 
-          fontSize: 80, 
-          opacity: 0.1, 
+        <IconComponent className="stat-icon-bg" sx={{
+          position: 'absolute',
+          right: 8,
+          bottom: 8,
+          fontSize: 60,
+          opacity: 0.13,
           transition: 'all 0.4s ease',
-          display: { xs: 'none', sm: 'block' }
+          pointerEvents: 'none',
         }} />
-
-        {/* Avatar with icon */}
         <Avatar
           sx={{
             bgcolor: isDark ? alpha(color, 0.25) : "rgba(255,255,255,0.3)",
             color: isDark ? color : "inherit",
-            width: { xs: 42, sm: 48, md: 54 },
-            height: { xs: 42, sm: 48, md: 54 },
-            flexShrink: 0,
+            width: 48,
+            height: 48,
+            mb: 1,
             boxShadow: isDark ? 'none' : '0 4px 12px rgba(0,0,0,0.1)',
           }}
         >
-          <IconComponent sx={{ fontSize: { xs: 22, sm: 26, md: 30 } }} />
+          <IconComponent sx={{ fontSize: 28 }} />
         </Avatar>
-        
-        {/* Text content */}
-        <Box sx={{ flex: 1, minWidth: 0, zIndex: 1 }}>
-          <Typography variant="body2" sx={{ 
-            opacity: isDark ? 0.7 : 0.9, 
-            fontWeight: 800, 
-            letterSpacing: 0.8, 
-            mb: 0.5, 
-            fontSize: { xs: '0.75rem', sm: '0.8rem', md: '0.85rem' },
-            textTransform: 'uppercase'
-          }}>
-            {title}
-          </Typography>
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <Typography sx={{ 
-              fontWeight: 900, 
-              lineHeight: 1, 
-              fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.8rem' }, 
-              whiteSpace: 'nowrap', 
-              overflow: 'hidden', 
-              textOverflow: 'ellipsis' 
-            }}>
-              {value}
-            </Typography>
-          </motion.div>
-        </Box>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 900,
+            fontSize: { xs: '1.3rem', sm: '1.6rem', md: '2rem' },
+            lineHeight: 1.1,
+            mb: 0.5,
+            color: isDark ? color : "#fff",
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {value}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            opacity: isDark ? 0.7 : 0.9,
+            fontWeight: 700,
+            fontSize: { xs: '0.85rem', sm: '0.95rem', md: '1.05rem' },
+            textTransform: 'uppercase',
+            letterSpacing: 0.8,
+            lineHeight: 1.2,
+          }}
+        >
+          {title}
+        </Typography>
       </Paper>
     </motion.div>
   );
