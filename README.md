@@ -1,80 +1,293 @@
-# 🎯 Goal Tracker - Professional Gamified Productivity Platform
+# 🎯 Goal Tracker — Professional Gamified Productivity Platform
 
-A high-performance, professional goal-tracking application built with **React**, **Material UI**, and **Framer Motion**. This platform transforms productivity into an engaging, gamified experience.
+A responsive, multi-page React application for managing goals, tracking progress, and visualizing productivity through a gamified dashboard.
 
-![Goal Tracker Preview](https://via.placeholder.com/1200x600?text=Goal+Tracker+Dashboard+Preview)
-
-## ✨ Core Features
-
-### 📊 Advanced Analytics
-- **Radar Charts**: Visualize your category performance and balance at a glance.
-- **Dual-Axis Composed Charts**: Track both the quantity of goals and the quality of progress simultaneously.
-- **Real-time Stats**: Instant calculation of completion rates, active streaks, and overall productivity.
-
-### 🎮 Gamification Engine
-- **XP & Leveling**: Earn experience points for every log and goal completion.
-- **Dynamic Leveling**: Watch your profile level up as you achieve your milestones.
-- **Visual Rewards**: Confetti and animations to celebrate your successes.
-
-### 🧩 Premium Goal Management
-- **Professional Form UI**: Modern interactive stickers for categories and goal types instead of boring dropdowns.
-- **Flexible Logging**: Easily update progress for count-based, time-based, or daily goals.
-- **Smart Status Control**: Pause, resume, or edit your goals with a single click.
-- **Secure Data Management**: Professional tools to reset settings or clear all progress data with safety confirmations.
-
-### 🌍 Universal Accessibility
-- **Full Localization**: Seamlessly switch between English and Persian.
-- **RTL Support**: Optimized layout for right-to-left languages.
-- **Dark & Light Mode**: A beautiful, eye-friendly experience in any lighting condition.
-
-## 🚀 Tech Stack
-
-- **Frontend**: [React.js](https://reactjs.org/) (Vite)
-- **UI Components**: [Material UI (MUI)](https://mui.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Data Visualization**: [Recharts](https://recharts.org/)
-- **Icons**: [MUI Icons](https://mui.com/material-ui/material-icons/)
-- **Localization**: Custom Context-based I18n system
-- **State Management**: React Context API
-
-## 📦 Project Structure
-
-```text
-src/
-├── components/      # Reusable UI elements (Charts, Cards, Navigation)
-├── context/         # Global state providers (Goals, Language, Theme)
-├── hooks/           # Custom React hooks (LocalStorage, Shortcuts)
-├── pages/           # Main application views (Dashboard, Goals, Settings)
-├── styles/          # Modular CSS and theme configurations
-└── data/            # Sample data and constants
-```
-
-## 🛠️ Installation & Development
-
-1. **Clone the repo**:
-   ```bash
-   git clone https://github.com/your-username/goal-tracker.git
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start the engine**:
-   ```bash
-   npm run dev
-   ```
-
-4. **Build for production**:
-   ```bash
-   npm run build
-   ```
-
-## 🌟 Why Goal Tracker?
-
-Unlike traditional to-do lists, **Goal Tracker** focuses on the *journey*. By combining deep analytical insights with a rewarding gamification system, it helps you stay motivated and provides a "100% perfect" visual summary of your life's progress.
 
 ---
 
-Designed and developed with ❤️ for achievers.
+##  Overview
+
+This project is designed to meet all Week 6 assignment requirements while delivering a modern and professional user experience.
+
+It combines:
+
+* Goal management (CRUD)
+* Real-time progress tracking
+* Gamification (XP & streak system)
+* Multilingual support (English / Persian)
+* RTL ↔ LTR layout switching
+* Persistent storage using LocalStorage
+
+---
+
+##  Assignment Compliance
+
+### ✔ Required Tech
+
+* React + Vite
+* React Router DOM
+* Two languages (EN / FA)
+* RTL/LTR layout switching
+* Responsive UI (desktop + mobile)
+* LocalStorage persistence
+* Material UI (MUI)
+
+---
+
+### ✔ Pages (Routes)
+
+* `/` or `/dashboard` — Dashboard
+* `/goals` — Goals list
+* `/goals/new` — Create goal
+* `/goals/:id` — Goal details
+* `/categories` — Categories overview
+* `/settings` — Settings
+* `*` — Not Found (404)
+
+---
+
+##  Core Features
+
+### 📊 Dashboard
+
+* Overall completion percentage
+* XP and level display
+* Streak tracking
+* Active goals preview
+* Completed goals summary
+
+---
+
+### 🧩 Goal Management (CRUD)
+
+* Create, edit, delete goals
+* Pause / resume goals
+* Automatic completion detection
+* Support for:
+
+  * Daily goals
+  * Count-based goals
+  * Time-based goals
+
+---
+
+### 📈 Progress Tracking
+
+* Add progress entries (logs)
+* Automatic calculation:
+
+`progress % = (progress / target) × 100`
+
+* Real-time UI updates
+
+---
+
+## 🎮 Gamification System
+
+### XP Rules
+
+* +20 XP for each progress log
+* +100 XP when a goal is completed
+
+### Level System
+
+`Level = floor(XP / 100)`
+
+---
+
+## 📅 Streak System
+
+* Logging progress on consecutive days increases streak
+* Missing one day resets streak
+* Only daily goals affect streak
+
+---
+
+## 🌍 Language & RTL/LTR
+
+### Supported Languages
+
+* English (LTR)
+* Persian (RTL)
+
+### Implementation
+
+* Language stored in `LanguageContext`
+* Layout direction controlled using:
+
+```html
+<div dir="ltr"> or <div dir="rtl">
+```
+
+* UI updates instantly when language changes
+
+---
+
+##  Architecture
+
+```text
+src/
+├── components/
+├── pages/
+├── context/
+├── hooks/
+├── utils/
+├── data/
+├── styles/
+```
+
+---
+
+##  Components
+
+### Core UI
+
+* Navbar
+* Footer
+* GoalCard
+* CategoryCard
+* StatsCard
+
+### Progress & Feedback
+
+* ProgressBar
+* LoadingState
+* EmptyState
+
+### Advanced Features
+
+* AdvancedChart
+* AdvancedSearch
+
+### Gamification
+
+* LevelBadge
+* NotificationToast
+
+### Controls
+
+* LanguageToggle
+
+---
+
+##  State Management (Context)
+
+* GoalsContext — Goal CRUD & progress
+* LanguageContext — Language + RTL/LTR
+* NotificationContext — Alerts & messages
+* SettingsContext — Theme & preferences
+
+---
+
+## Custom Hooks
+
+* useLocalStorage — Sync data with browser storage
+* useKeyboardShortcuts — Keyboard interactions
+
+---
+
+##  Data Model
+
+```js
+{
+  id,
+  title,
+  category,
+  type: "daily" | "count" | "time",
+  target,
+  progress,
+  status,
+  logs: [{ date, amount }]
+}
+```
+
+---
+
+## 🎨 Styling & Theming
+
+### Core Styles
+
+* index.css
+* App.css
+
+### Layout & Base
+
+* base.css
+* layout.css
+
+### Components
+
+* components.css
+
+### Theme
+
+* dark-theme.css
+
+### Utilities
+
+* responsive.css
+* utility.css
+
+### Accessibility & Animation
+
+* accessibility.css
+* animation.css
+
+---
+
+## ⭐ Bonus Features
+
+* Fake authentication
+* Charts (Recharts)
+* Export goals (JSON)
+* Accessibility (ARIA labels, keyboard navigation)
+
+---
+
+## 🛠️ Tech Stack
+
+* React 18
+* Vite
+* React Router DOM
+* Material UI (MUI)
+* Framer Motion
+* Recharts
+* LocalStorage
+
+---
+
+## ▶️ How to Run
+
+```bash
+cd d:/goal-tracker/goal-tracker
+npm install
+npm run dev
+```
+
+Open:
+
+```
+http://localhost:5173
+```
+
+---
+
+##  Project Status
+
+* Build successful
+* No critical lint errors
+* All required features implemented and tested
+
+## 🏁 Conclusion
+
+This project provides a structured and user-friendly way to manage goals, track progress, and stay motivated through gamification and analytics.
+
+
+## 📸 Screenshots
+
+### Desktop
+
+### Mobile
+
+
+---
